@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:minHeight="218dp"
+    android:layout_height="wrap_content"
+    android:background="#00000000"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <com.google.android.material.card.MaterialCardView style="@style/GroupCardCorners"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginStart="15dp"
+        android:layout_marginEnd="15dp"
+        android:layout_marginBottom="15dp"
+        app:cardBackgroundColor="?attr/card_background"
+        app:cardElevation="20dp"
+        app:strokeColor="@color/TitleBarColour"
+        app:strokeWidth="3dp"
+        android:layout_marginTop="5dp"
+        android:id="@+id/card">
+        <RelativeLayout android:padding="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/heading"
+                android:layout_width="wrap_content"
+                android:layout_height="43dp"
+                android:fontFamily="@font/poppins_regular"
+                android:text="Work"
+                android:gravity="center_vertical"
+                android:textColor="?attr/group_head_color"
+                android:textSize="24dp" />
+
+            <ImageButton
+                android:id="@+id/edit_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:background="?android:selectableItemBackground"
+                android:padding="10dp"
+                android:src="?attr/edit_icon"/>
+            <ImageButton
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:layout_below="@id/heading"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:layout_marginTop="10dp"
+                android:background="?android:selectableItemBackground"
+                android:id="@+id/plusimg"
+                android:visibility="gone"
+                android:src="@drawable/ic_plus_icon_dark"/>
+
+
+            <TextView
+                android:layout_width="371dp"
+                android:layout_height="20dp"
+                android:layout_below="@+id/plusimg"
+                android:layout_centerHorizontal="true"
+                android:fontFamily="@font/poppins_regular"
+                android:text="Tap to here to add passwords"
+                android:visibility="gone"
+                android:textSize="12dp"
+                android:id="@+id/createtxtview"
+                android:layout_marginTop="3dp"
+                android:textAlignment="center"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:gravity="center_horizontal"
+                android:layout_below="@id/heading"
+                android:orientation="horizontal"
+                android:layout_marginBottom="5dp"
+                android:id="@+id/bntrow1">
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:gravity="center_horizontal"
+                android:layout_below="@id/bntrow1"
+                android:orientation="horizontal"
+                android:layout_marginBottom="5dp"
+                android:id="@+id/bntrow2">
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:gravity="center_horizontal"
+                android:layout_below="@id/bntrow2"
+                android:orientation="horizontal"
+                android:layout_marginBottom="5dp"
+                android:id="@+id/bntrow3">
+            </LinearLayout>
+
+
+        </RelativeLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+
+</RelativeLayout>

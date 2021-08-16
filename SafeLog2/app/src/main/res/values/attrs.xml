@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <attr name="search_icon" format="reference"/>
+    <attr name="card_background" format="reference"/>
+    <attr name="edit_icon" format="reference"/>
+    <attr name="group_head_color" format="color"/>
+    <attr name="dialog_background" format="color"/>
+    <attr name="blockspiner_background" format="reference"/>
+</resources>

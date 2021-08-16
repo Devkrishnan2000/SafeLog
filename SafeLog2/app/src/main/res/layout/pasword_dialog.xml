@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardBackgroundColor="?attr/dialog_background">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/passtitlebar"
+            style="@style/CustomCardCorners"
+            android:layout_width="match_parent"
+            android:layout_height="46dp"
+            app:cardBackgroundColor="@color/TitleBarColour"
+            app:cardElevation="20dp">
+
+            <TextView
+                android:id="@+id/passtitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:fontFamily="@font/poppins_regular"
+                android:text="Create new password"
+                android:textColor="@color/white"
+                android:textSize="18dp" />
+        </com.google.android.material.card.MaterialCardView>
+
+
+        <EditText
+            android:id="@+id/newpasname"
+            android:layout_width="match_parent"
+            android:layout_height="37dp"
+            android:layout_below="@id/passtitlebar"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="30dp"
+            android:hint="Enter title"
+            android:inputType="text"
+            android:maxLines="1"
+            android:paddingStart="3dp"
+            android:paddingEnd="3dp" />
+
+        <Spinner
+            android:id="@+id/blockspiner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/passtitlebar"
+            android:layout_alignEnd="@id/newpasname"
+            android:background="?attr/blockspiner_background"
+            android:layout_marginTop="20dp"
+            />
+
+
+
+
+        <Spinner
+            android:id="@+id/pastype"
+            android:layout_width="match_parent"
+            android:layout_height="37dp"
+            android:layout_below="@id/newpasname"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="33dp"
+            android:layout_marginEnd="30dp"
+            android:background="?attr/editTextBackground"
+            android:paddingStart="3dp"
+            android:paddingEnd="3dp" />
+
+
+        <EditText
+            android:id="@+id/usrname"
+            android:layout_width="match_parent"
+            android:layout_height="37dp"
+            android:maxLines="1"
+            android:inputType="text"
+            android:layout_below="@id/pastype"
+            android:layout_marginStart="30dp"
+            android:layout_marginEnd="30dp"
+            android:layout_marginTop="33dp"
+            android:hint="Enter username"
+            android:paddingStart="3dp"
+            android:paddingEnd="3dp" />
+
+        <EditText
+            android:id="@+id/paswrd"
+            android:layout_width="match_parent"
+            android:layout_height="37dp"
+            android:layout_below="@id/usrname"
+            android:layout_marginStart="30dp"
+            android:maxLines="1"
+            android:inputType="textPassword"
+            android:layout_marginEnd="30dp"
+            android:layout_marginTop="33dp"
+            android:hint="Enter password"
+            android:paddingStart="3dp"
+            android:paddingEnd="3dp" />
+
+        <Spinner
+            android:id="@+id/grpselecspiner"
+            android:layout_width="match_parent"
+            android:layout_height="37dp"
+            android:layout_below="@id/paswrd"
+            android:layout_marginStart="30dp"
+            android:layout_marginEnd="30dp"
+            android:layout_marginTop="33dp"
+            android:background="?attr/editTextBackground"
+            android:paddingStart="3dp"
+            android:paddingEnd="3dp" />
+        <Button
+            android:id="@+id/savepasbtn"
+            android:layout_width="88dp"
+            android:layout_height="45dp"
+            android:layout_alignEnd="@id/passtitlebar"
+            android:layout_below="@id/grpselecspiner"
+            android:layout_marginEnd="10dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="10dp"
+            android:backgroundTint="@color/TitleBarColour"
+            android:fontFamily="@font/poppins_regular"
+            android:gravity="center"
+            android:letterSpacing="0"
+            android:text="Create"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="14dp" />
+
+        <Button
+            android:id="@+id/canclpasbtn"
+            android:layout_width="88dp"
+            android:layout_height="45dp"
+            android:layout_alignStart="@id/passtitlebar"
+            android:layout_below="@id/grpselecspiner"
+            android:layout_marginStart="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginTop="20dp"
+            android:backgroundTint="@color/TitleBarColour"
+            android:fontFamily="@font/poppins_regular"
+            android:gravity="center"
+            android:letterSpacing="0"
+            android:text="Cancel"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="14dp" />
+
+
+
+
+    </RelativeLayout>
+
+</com.google.android.material.card.MaterialCardView>

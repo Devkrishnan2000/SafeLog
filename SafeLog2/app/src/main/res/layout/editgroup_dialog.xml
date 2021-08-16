@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardCornerRadius="5dp"
+    app:cardBackgroundColor="?attr/dialog_background"
+    android:layout_height="wrap_content">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.google.android.material.card.MaterialCardView style="@style/CustomCardCorners"
+            android:layout_width="match_parent"
+            android:layout_height="46dp"
+            android:id="@+id/grouptitlebar"
+            app:cardBackgroundColor="@color/TitleBarColour"
+            app:cardElevation="20dp">
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="Edit Group Name"
+                    android:fontFamily="@font/poppins_regular"
+                    android:textSize="18dp"
+                    android:textColor="@color/white"
+                    android:id="@+id/grouptitle"
+                    android:layout_marginStart="10dp"/>
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/delgrpbtn"
+                    android:src="@drawable/ic_baseline_delete_24"
+                    android:background="?android:selectableItemBackground"
+                    android:layout_alignParentEnd="true"/>
+            </RelativeLayout>
+
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <EditText
+            android:id="@+id/newgrpname"
+            android:layout_width="match_parent"
+            android:layout_height="37dp"
+            android:layout_marginStart="30dp"
+            android:layout_marginEnd="30dp"
+            android:layout_below="@id/grouptitlebar"
+            android:layout_centerInParent="true"
+            android:layout_marginTop="20dp"
+            android:hint="Enter New Group Name"
+            android:paddingStart="3dp" />
+
+        <Button
+            android:id="@+id/savegrpbtn"
+            android:layout_width="88dp"
+            android:layout_height="45dp"
+            android:layout_below="@id/newgrpname"
+            android:layout_alignEnd="@id/grouptitlebar"
+            android:layout_marginEnd="10dp"
+            android:layout_marginTop="10dp"
+            android:backgroundTint="@color/TitleBarColour"
+            android:fontFamily="@font/poppins_regular"
+            android:gravity="center"
+            android:letterSpacing="0"
+            android:text="Save"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="14dp" />
+
+
+    </RelativeLayout>
+
+
+
+
+</com.google.android.material.card.MaterialCardView>

@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">SafeLog</string>
+
+     <!--Password type array list -->
+    <string-array name="paswrdtype">
+        <item>Username and Password</item>
+        <item>Pin</item>
+        <item>Password</item>
+    </string-array>
+</resources>
