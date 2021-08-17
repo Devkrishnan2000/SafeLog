@@ -105,7 +105,7 @@ public class MainActivity extends AppCompatActivity {
         linearLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(linearLayoutManager);
         linearLayoutManager.setOrientation(RecyclerView.VERTICAL); //set the orientation of recyclerviwe
-        Adapter = new AdapterClass(grplist);
+        Adapter = new AdapterClass(grplist,paslist);
         recyclerView.setAdapter(Adapter);
 
     }
