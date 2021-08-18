@@ -88,7 +88,7 @@ public class AdapterClass extends RecyclerView.Adapter<AdapterClass.ViewHolder> 
         }
         public  void buttontest(int curcardpos)
         {
-            // each linear layout for each row
+            // each linear layout for each row sdfdsf
             LinearLayout row1 = itemView.findViewById(R.id.bntrow1);
             LinearLayout row2 = itemView.findViewById(R.id.bntrow2);
             LinearLayout row3 = itemView.findViewById(R.id.bntrow3);
