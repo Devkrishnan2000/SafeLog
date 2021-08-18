@@ -88,65 +88,69 @@ public class AdapterClass extends RecyclerView.Adapter<AdapterClass.ViewHolder> 
         }
         public  void buttontest(int curcardpos)
         {
-            // each linear layout for each row sdfdsf
             LinearLayout row1 = itemView.findViewById(R.id.bntrow1);
             LinearLayout row2 = itemView.findViewById(R.id.bntrow2);
             LinearLayout row3 = itemView.findViewById(R.id.bntrow3);
-            LinearLayout currow; // stores current row in which button are stored
+            LinearLayout currow;
             List<PaslistClass> pasgrplist;  //stores all the pasword titles in the specific group specified by curcardpos
             pasgrplist = getgrpbtncnt(paslist,grplist.get(curcardpos).pos); //function to get password titles
             int pascount = pasgrplist.size();  //count of total passwords in the current group
-            int col=0;      //column
-            int temppascnt = pascount; //temporary copy of pascount
 
-            /* row value is calculated in this manner
-             since maximum is 3 rows we divide the total number of password by 3 so we can divide them to three groups =>1
 
-              row will be 0 if group contains 2 or 1 passwords eg (1/3=0) .to prevent this issue row is set to 1 if pasount is >0
-             this means if password list is not empty there should be alteast one row to display it ! =>2
-
-             number of columns in each row is calculated by the following manner:
-
-             if temppascnt -3 is >3 then this means alteast one row is fully complete (if a row has three items then its fully complete)
-             note that temppascnt is reduces by 3 in every iteration
-
-             if its false there will be an incomplete row so to get the column value of incomplete row we do tempascnt%3 this value will be
-             the number of columns remaining
-
-             but if tempcnt ==3 then 3-3>3 will be 0>3 so in next statement 3%3 will be 0 but 3 columns are there to prevent it if tempcnt%3 ==0 and tempcnt !=0
-             the  col value is assigned to three.
-             */
-            int row =(pascount/3);
-
-            if(pascount>0)
-             {
-                 if(row==0)
-                     row = 1;
-                 else if(pascount%3!=0)
-                     row+=1;
-             }
-
-            for(int i=1;i<=row;++i)
+            if(pascount!=0)
             {
-               switch (i)
-               {
-                   case 1:currow =row1;break;
-                   case 2:currow =row2;break;
-                   case 3:currow =row3;break;
-                   default:currow =row1;
-               }
-               if(temppascnt%3==0&&temppascnt!=0)
-               {
-                   col=3;
-               }
-               else
-                if(temppascnt-3>=3)
-                {
-                    col =3;
-                    temppascnt -=3;
-                }
+                int fixed_col =3;
+                int remain_col=0;
+                int cur_col;
+                int row;
+                int pending;
+
+                if(pascount<=3)
+                    row =1;
                 else
-                    col = pascount%3;
+                    row = pascount/fixed_col;
+
+                pending = pascount%fixed_col;
+
+                if(pending>0)
+                    remain_col =pending;
+
+
+                for(int i=1;i<=row;++i)
+                {
+                    switch (i)
+                    {
+                        case 1:currow =row1;break;
+                        case 2:currow =row2;break;
+                        case 3:currow =row3;break;
+                        default:currow =row1;
+                    }
+                    if(i==row&& remain_col!=0)
+                        cur_col =remain_col;
+                    else
+                        cur_col =fixed_col;
+                    for(int j=1;j<=cur_col;++j)
+                    {
+                        int curpos =(((i-1)*3)+j)-1;
+                        Button btn = new Button(itemView.getContext());
+                        btn.setId(pasgrplist.get(curpos).pasid);
+                        btn.setText(pasgrplist.get(curpos).title);
+                        //  Typeface font= ResourcesCompat.getFont(itemView.getContext(), R.font.rubik_font);  NOT WORKING IN ANDROID 7
+                        btn.setTextSize(itemView.getContext().getResources().getDimension(R.dimen.button_textsize));
+                        btn.setBackgroundTintList(AppCompatResources.getColorStateList(itemView.getContext(),pasgrplist.get(curpos).color));
+                        // btn.setTypeface(font);
+                        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,LinearLayout.LayoutParams.MATCH_PARENT);
+                        layoutParams.setMargins(5,0,5,0);
+                        btn.setPadding(50,0,50,0);
+                        btn.setLayoutParams(layoutParams);
+                        btn.setTextColor(AppCompatResources.getColorStateList(itemView.getContext(),R.color.white));
+                        currow.addView(btn);
+                    }
+                }
+
+            }
+
+              /*
                for(int j=1;j<=col;++j)
                {
                    int curpos =(((i-1)*3)+j)-1;
@@ -163,11 +167,11 @@ public class AdapterClass extends RecyclerView.Adapter<AdapterClass.ViewHolder> 
                    btn.setLayoutParams(layoutParams);
                    btn.setTextColor(AppCompatResources.getColorStateList(itemView.getContext(),R.color.white));
                    currow.addView(btn);
+
+
                }
+                */
 
-
-
-            }
         }
 
 
