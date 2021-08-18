@@ -88,18 +88,37 @@ public class AdapterClass extends RecyclerView.Adapter<AdapterClass.ViewHolder> 
         }
         public  void buttontest(int curcardpos)
         {
+            // each linear layout for each row
             LinearLayout row1 = itemView.findViewById(R.id.bntrow1);
             LinearLayout row2 = itemView.findViewById(R.id.bntrow2);
             LinearLayout row3 = itemView.findViewById(R.id.bntrow3);
-            LinearLayout currow;
-            List<PaslistClass> pasgrplist;
-            pasgrplist = getgrpbtncnt(paslist,grplist.get(curcardpos).pos);
-            int pascount = pasgrplist.size();
-            int col=0;
-            int row =(pascount/3);
-            int temppascnt = pascount;
+            LinearLayout currow; // stores current row in which button are stored
+            List<PaslistClass> pasgrplist;  //stores all the pasword titles in the specific group specified by curcardpos
+            pasgrplist = getgrpbtncnt(paslist,grplist.get(curcardpos).pos); //function to get password titles
+            int pascount = pasgrplist.size();  //count of total passwords in the current group
+            int col=0;      //column
+            int temppascnt = pascount; //temporary copy of pascount
 
-             if(pascount>0)
+            /* row value is calculated in this manner
+             since maximum is 3 rows we divide the total number of password by 3 so we can divide them to three groups =>1
+
+              row will be 0 if group contains 2 or 1 passwords eg (1/3=0) .to prevent this issue row is set to 1 if pasount is >0
+             this means if password list is not empty there should be alteast one row to display it ! =>2
+
+             number of columns in each row is calculated by the following manner:
+
+             if temppascnt -3 is >3 then this means alteast one row is fully complete (if a row has three items then its fully complete)
+             note that temppascnt is reduces by 3 in every iteration
+
+             if its false there will be an incomplete row so to get the column value of incomplete row we do tempascnt%3 this value will be
+             the number of columns remaining
+
+             but if tempcnt ==3 then 3-3>3 will be 0>3 so in next statement 3%3 will be 0 but 3 columns are there to prevent it if tempcnt%3 ==0 and tempcnt !=0
+             the  col value is assigned to three.
+             */
+            int row =(pascount/3);
+
+            if(pascount>0)
              {
                  if(row==0)
                      row = 1;
