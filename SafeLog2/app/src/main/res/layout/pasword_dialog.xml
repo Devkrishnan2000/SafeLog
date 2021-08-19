@@ -108,14 +108,15 @@
             android:background="?attr/editTextBackground"
             android:paddingStart="3dp"
             android:paddingEnd="3dp" />
+
         <Button
             android:id="@+id/savepasbtn"
             android:layout_width="88dp"
             android:layout_height="45dp"
-            android:layout_alignEnd="@id/passtitlebar"
             android:layout_below="@id/grpselecspiner"
-            android:layout_marginEnd="10dp"
+            android:layout_alignEnd="@id/passtitlebar"
             android:layout_marginTop="20dp"
+            android:layout_marginEnd="10dp"
             android:layout_marginBottom="10dp"
             android:backgroundTint="@color/TitleBarColour"
             android:fontFamily="@font/poppins_regular"

@@ -2,8 +2,10 @@ package com.example.safelog;
 
 import static android.service.controls.ControlsProviderService.TAG;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +17,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.content.res.AppCompatResources;
+import androidx.appcompat.widget.AppCompatButton;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
@@ -92,6 +95,7 @@ public class AdapterClass extends RecyclerView.Adapter<AdapterClass.ViewHolder> 
             Headingtxt.setText(heading);
         }
 
+        @SuppressLint("RestrictedApi")
         public  void btngen(int curcardpos)
         {
             Log.d(TAG, "buttontest: this function is called ");
@@ -142,18 +146,20 @@ public class AdapterClass extends RecyclerView.Adapter<AdapterClass.ViewHolder> 
                         else
                             cur_col = fixed_col;
                         for (int j = 0; j < cur_col; ++j) {
-                            Button btn = new Button(itemView.getContext());
+                            AppCompatButton btn = new AppCompatButton(itemView.getContext());
                             Log.d(TAG, "buttontest: curpos" + curpos);
                             btn.setId(pasgrplist.get(curpos).pasid);
                             btn.setText(pasgrplist.get(curpos).title);
                             btn.setTextSize(itemView.getContext().getResources().getDimension(R.dimen.button_textsize));
+                            btn.setMinimumWidth((int) itemView.getContext().getResources().getDimension(R.dimen.button_width));
                             btn.setBackgroundTintList(AppCompatResources.getColorStateList(itemView.getContext(), pasgrplist.get(curpos).color));
                             //  Typeface font= ResourcesCompat.getFont(itemView.getContext(), R.font.rubik_font);  NOT WORKING IN ANDROID 7
                             // btn.setTypeface(font);
                             LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.MATCH_PARENT);
                             layoutParams.setMargins(5, 0, 5, 0);
-                            btn.setPadding(50, 0, 50, 0);
+                           // btn.setPadding(50, 0, 50, 0);
                             btn.setLayoutParams(layoutParams);
+                            btn.setAutoSizeTextTypeUniformWithConfiguration(12,15,2, TypedValue.COMPLEX_UNIT_DIP);
                             btn.setTextColor(AppCompatResources.getColorStateList(itemView.getContext(), R.color.white));
                             currow.addView(btn);
                             curpos++;

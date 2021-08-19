@@ -24,6 +24,9 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Executor;
+import java.util.concurrent.ExecutorService;
+
 import net.sqlcipher.database.SQLiteDatabase;
 
 public class MainActivity extends AppCompatActivity {
@@ -72,7 +75,6 @@ public class MainActivity extends AppCompatActivity {
         fabview();                    // initialises fab buttons (add password and add group button)
         datainit();                  // initialises data for recycler view
         recyclerinit();              // initialises recyclerview
-
     }
 
     public void datainit() {
@@ -147,7 +149,13 @@ public class MainActivity extends AppCompatActivity {
                 try
                 {
                     groupModelClass = new GroupModelClass(-1,name.getText().toString());
-                    db.insertGroup(groupModelClass);
+
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            db.insertGroup(groupModelClass);
+                        }
+                    }).start();
                     newgroupname = groupModelClass.grpname;
                     updateRecyclerview(newgroupname);    // updates the recyclerview with new group
                     dialog.dismiss();        //dialog closes
@@ -302,7 +310,14 @@ public class MainActivity extends AppCompatActivity {
 
                     DBClass db = new DBClass(this);
                     PassModelClass passModelClass = new PassModelClass(title,usrname,paswrd,pastype,grpid,-1,color);
-                    db.insertPass(passModelClass);
+                    new Thread(new Runnable() {
+                        public void run() {
+                            db.insertPass(passModelClass);
+                        }
+                    }).start();
+
+
+
 
                     int pasid = paslist.size()+1;
                     PaslistClass item = new PaslistClass(pasid,title,grpid,color);
