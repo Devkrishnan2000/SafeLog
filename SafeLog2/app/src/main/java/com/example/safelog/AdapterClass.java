@@ -22,14 +22,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 
 public class AdapterClass extends RecyclerView.Adapter<AdapterClass.ViewHolder>  {
     @NonNull
 
     private List<ModelClass> grplist;
-    private List<PaslistClass> paslist;
+    public List<PaslistClass> paslist;
     Dialog dialog; // edit dialog
 
     public AdapterClass(List<ModelClass> grplist ,List<PaslistClass> paslist)
@@ -46,13 +45,24 @@ public class AdapterClass extends RecyclerView.Adapter<AdapterClass.ViewHolder> 
     public void onBindViewHolder(@NonNull AdapterClass.ViewHolder holder, int position) {
      String heading = grplist.get(position).Heading(); // gets the heading text of current card
      holder.setdata(heading);
-     holder.buttontest(position);// heading value is passed from grplist to viewholder
+     holder.btngen(position);// heading value is passed from grplist to viewholder
     }
 
     @Override
     public int getItemCount() {
         return grplist.size();
     } // returns the item count of cards
+
+    public int getgrpbtncount(int grp)
+    {
+        int count =0;
+        for (PaslistClass po:paslist)
+        {
+            if(po.grpid==grp)
+                count++;
+        }
+        return  count;
+    }
 
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -72,12 +82,7 @@ public class AdapterClass extends RecyclerView.Adapter<AdapterClass.ViewHolder> 
             Addbtn = itemView.findViewById(R.id.plusimg);
             editgrpfun(); //function of edit buttton in the card
             int i=0;
-            for (ModelClass cls: grplist) {
-                Log.d(TAG, "grplist_pos: "+cls.pos);
-                Log.d(TAG, "list_pos: "+i+"\n\n");
-                Log.d(TAG, "Adapter_pos: "+pos);
-                i++;
-            }
+
 
         }
 
@@ -86,91 +91,77 @@ public class AdapterClass extends RecyclerView.Adapter<AdapterClass.ViewHolder> 
         public void setdata(String heading) {
             Headingtxt.setText(heading);
         }
-        public  void buttontest(int curcardpos)
+
+        public  void btngen(int curcardpos)
         {
+            Log.d(TAG, "buttontest: this function is called ");
             LinearLayout row1 = itemView.findViewById(R.id.bntrow1);
             LinearLayout row2 = itemView.findViewById(R.id.bntrow2);
             LinearLayout row3 = itemView.findViewById(R.id.bntrow3);
-            LinearLayout currow;
+            LinearLayout currow = null;
             List<PaslistClass> pasgrplist;  //stores all the pasword titles in the specific group specified by curcardpos
-            pasgrplist = getgrpbtncnt(paslist,grplist.get(curcardpos).pos); //function to get password titles
-            int pascount = pasgrplist.size();  //count of total passwords in the current group
 
+                pasgrplist = getgrpbtncnt(paslist, grplist.get(curcardpos).pos); //function to get password titles
+                int pascount = pasgrplist.size();  //count of total passwords in the current group
+                Log.d(TAG, "pasgrplist size: " + pascount);
+                if (pascount != 0) {
+                    int fixed_col = 3;
+                    int remain_col = 0;
+                    int cur_col;
+                    int row;
+                    int pending;
+                    int curpos;
+                    row = pascount / fixed_col;
+                    pending = pascount % fixed_col;
 
-            if(pascount!=0)
-            {
-                int fixed_col =3;
-                int remain_col=0;
-                int cur_col;
-                int row;
-                int pending;
+                    if (pascount % fixed_col == 0)
+                        row--;
 
-                if(pascount<=3)
-                    row =1;
-                else
-                    row = pascount/fixed_col;
-
-                pending = pascount%fixed_col;
-
-                if(pending>0)
-                    remain_col =pending;
-
-
-                for(int i=1;i<=row;++i)
-                {
-                    switch (i)
-                    {
-                        case 1:currow =row1;break;
-                        case 2:currow =row2;break;
-                        case 3:currow =row3;break;
-                        default:currow =row1;
+                    if (pending > 0)
+                        remain_col = pending;
+                    curpos = 0;
+                    for (int i = 0; i < row + 1; ++i) {
+                        switch (i) {
+                            case 0:
+                                row1.removeAllViews();
+                                currow = row1;
+                                break;
+                            case 1:
+                                row2.removeAllViews();
+                                currow = row2;
+                                break;
+                            case 2:
+                                row3.removeAllViews();
+                                currow = row3;
+                                break;
+                            default:
+                                currow = row1;
+                        }
+                        if (i == row && remain_col != 0)
+                            cur_col = remain_col;
+                        else
+                            cur_col = fixed_col;
+                        for (int j = 0; j < cur_col; ++j) {
+                            Button btn = new Button(itemView.getContext());
+                            Log.d(TAG, "buttontest: curpos" + curpos);
+                            btn.setId(pasgrplist.get(curpos).pasid);
+                            btn.setText(pasgrplist.get(curpos).title);
+                            btn.setTextSize(itemView.getContext().getResources().getDimension(R.dimen.button_textsize));
+                            btn.setBackgroundTintList(AppCompatResources.getColorStateList(itemView.getContext(), pasgrplist.get(curpos).color));
+                            //  Typeface font= ResourcesCompat.getFont(itemView.getContext(), R.font.rubik_font);  NOT WORKING IN ANDROID 7
+                            // btn.setTypeface(font);
+                            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.MATCH_PARENT);
+                            layoutParams.setMargins(5, 0, 5, 0);
+                            btn.setPadding(50, 0, 50, 0);
+                            btn.setLayoutParams(layoutParams);
+                            btn.setTextColor(AppCompatResources.getColorStateList(itemView.getContext(), R.color.white));
+                            currow.addView(btn);
+                            curpos++;
+                        }
                     }
-                    if(i==row&& remain_col!=0)
-                        cur_col =remain_col;
-                    else
-                        cur_col =fixed_col;
-                    for(int j=1;j<=cur_col;++j)
-                    {
-                        int curpos =(((i-1)*3)+j)-1;
-                        Button btn = new Button(itemView.getContext());
-                        btn.setId(pasgrplist.get(curpos).pasid);
-                        btn.setText(pasgrplist.get(curpos).title);
-                        //  Typeface font= ResourcesCompat.getFont(itemView.getContext(), R.font.rubik_font);  NOT WORKING IN ANDROID 7
-                        btn.setTextSize(itemView.getContext().getResources().getDimension(R.dimen.button_textsize));
-                        btn.setBackgroundTintList(AppCompatResources.getColorStateList(itemView.getContext(),pasgrplist.get(curpos).color));
-                        // btn.setTypeface(font);
-                        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,LinearLayout.LayoutParams.MATCH_PARENT);
-                        layoutParams.setMargins(5,0,5,0);
-                        btn.setPadding(50,0,50,0);
-                        btn.setLayoutParams(layoutParams);
-                        btn.setTextColor(AppCompatResources.getColorStateList(itemView.getContext(),R.color.white));
-                        currow.addView(btn);
-                    }
+
                 }
 
-            }
-
-              /*
-               for(int j=1;j<=col;++j)
-               {
-                   int curpos =(((i-1)*3)+j)-1;
-                   Button btn = new Button(itemView.getContext());
-                   btn.setId(pasgrplist.get(curpos).pasid);
-                   btn.setText(pasgrplist.get(curpos).title);
-                   //  Typeface font= ResourcesCompat.getFont(itemView.getContext(), R.font.rubik_font);  NOT WORKING IN ANDROID 7
-                   btn.setTextSize(itemView.getContext().getResources().getDimension(R.dimen.button_textsize));
-                   btn.setBackgroundTintList(AppCompatResources.getColorStateList(itemView.getContext(),pasgrplist.get(curpos).color));
-                  // btn.setTypeface(font);
-                   LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,LinearLayout.LayoutParams.MATCH_PARENT);
-                   layoutParams.setMargins(5,0,5,0);
-                   btn.setPadding(50,0,50,0);
-                   btn.setLayoutParams(layoutParams);
-                   btn.setTextColor(AppCompatResources.getColorStateList(itemView.getContext(),R.color.white));
-                   currow.addView(btn);
-
-
-               }
-                */
 
         }
 
@@ -190,13 +181,22 @@ public class AdapterClass extends RecyclerView.Adapter<AdapterClass.ViewHolder> 
         private List<PaslistClass> getgrpbtncnt(List<PaslistClass> pas, int grp)
         {
             List<PaslistClass> pasgrplist= new ArrayList<>();
-            int count =0;
             for (PaslistClass po:pas)
             {
                    if(po.grpid==grp)
                        pasgrplist.add(po);
             }
             return  pasgrplist;
+        }
+        private int getgrpbtncnt(List<PaslistClass> pas, int grp, boolean cnt)
+        {
+           int count =0;
+            for (PaslistClass po:pas)
+            {
+                if(po.grpid==grp)
+                    count++;
+            }
+            return count;
         }
 
         private void setdialog()

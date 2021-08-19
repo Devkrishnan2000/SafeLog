@@ -14,6 +14,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -60,6 +61,7 @@ public class MainActivity extends AppCompatActivity {
     EditText paswrdtxt;
     String pastype;
     int grpid;
+    int grppos;
     int color;
 
     @Override
@@ -88,14 +90,7 @@ public class MainActivity extends AppCompatActivity {
             grplist.add(new ModelClass(groupname,position));
 
         }
-        for (PaslistClass pass:paslist) {
 
-            Log.d(TAG, "passlist content\n");
-            Log.d(TAG, pass.title);
-            Log.d(TAG, String.valueOf(pass.grpid));
-            Log.d(TAG, String.valueOf(pass.color));
-            Log.d(TAG, String.valueOf(pass.pasid));
-        }
     }
 
 
@@ -258,6 +253,7 @@ public class MainActivity extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 ModelClass grp = (ModelClass) grpselect.getItemAtPosition(i);
                 grpid = grp.pos;
+                grppos =i;
                 Log.d(TAG, "groupid: "+grpid);
             }
 
@@ -270,7 +266,6 @@ public class MainActivity extends AppCompatActivity {
         pascanclbtn.setOnClickListener(view -> pasdialog.dismiss());
         pascreatebtn.setOnClickListener(view -> {
             addpass();
-            pasdialog.dismiss();
         });
     }
 
@@ -294,23 +289,40 @@ public class MainActivity extends AppCompatActivity {
             }
             else
             {
-                title = paswordtitletxt.getText().toString();
-                usrname =usrnnametxt.getText().toString();
-                paswrd = paswrdtxt.getText().toString();
+                if(Adapter.getgrpbtncount(grpid)>=9)
+                {
+                    Toast.makeText(this,"Current group is full, please select another group",Toast.LENGTH_SHORT).show();
+                }
+                else
+                {
+                    title = paswordtitletxt.getText().toString();
+                    usrname =usrnnametxt.getText().toString();
+                    paswrd = paswrdtxt.getText().toString();
 
 
-                DBClass db = new DBClass(this);
-                PassModelClass passModelClass = new PassModelClass(title,usrname,paswrd,pastype,grpid,-1,color);
-                db.insertPass(passModelClass);
+                    DBClass db = new DBClass(this);
+                    PassModelClass passModelClass = new PassModelClass(title,usrname,paswrd,pastype,grpid,-1,color);
+                    db.insertPass(passModelClass);
+
+                    int pasid = paslist.size()+1;
+                    PaslistClass item = new PaslistClass(pasid,title,grpid,color);
+                    Adapter.notifyItemChanged(grppos);
+                    paslist.add(item);
+                    pasdialog.dismiss();
+
+                }
             }
         }
     }
 
     private void updateRecyclerview(String grpname)
     {
-        grplist.add(new ModelClass(grpname, grplist.size()));
+        grplist.add(new ModelClass(grpname, grplist.size()+1));
         Adapter.notifyItemInserted(grplist.size());
+
     }
+
+
 
 
 
