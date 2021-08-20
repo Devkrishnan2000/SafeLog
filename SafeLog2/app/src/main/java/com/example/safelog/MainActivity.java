@@ -14,7 +14,6 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -24,14 +23,20 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.Executor;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import net.sqlcipher.database.SQLiteDatabase;
 
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "dev" ;
+    private static int cores;
+    private static ExecutorService executorService;
 
     //recycler view declarations
     RecyclerView recyclerView;
@@ -71,41 +76,102 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        cores = Runtime.getRuntime().availableProcessors();
+        executorService = Executors.newFixedThreadPool(cores+1);
         SQLiteDatabase.loadLibs(this);
-        fabview();                    // initialises fab buttons (add password and add group button)
-        datainit();                  // initialises data for recycler view
+        fabview();                    // initialises fab buttons (add password and add group button)// initialises data for recycler view
         recyclerinit();              // initialises recyclerview
     }
 
-    public void datainit() {
+    public void exestop()
+    {
+        executorService.shutdown();
+    }
 
-        grplist = new ArrayList<>();
-        paslist = new ArrayList<>();
-        DBClass db = new DBClass(this);
-        grpnamelist = db.readGroupName();//stores group names and their ids
-        paslist =  db.readpasname(); // stores password title and group to paslist
-        for (GroupModelClass groupModelClass:grpnamelist)
-        {
-            /*gets only the group name from grpnamelist since we only need group name for recycler view */
-            String groupname = groupModelClass.grpname;
-            int position = groupModelClass.id;
-            grplist.add(new ModelClass(groupname,position));
+    public Callable<List<ModelClass>> datainit()
+    {
+         return ()->
+         {
+             List<ModelClass> list2 = new ArrayList<>();
+             list2 = new ArrayList<>();
+             DBClass db = new DBClass(this);
+             grpnamelist = db.readGroupName();//stores group names and their ids
+             // stores password title and group to paslist
+             for (GroupModelClass groupModelClass:grpnamelist)
+             {
+                 /*gets only the group name from grpnamelist since we only need group name for recycler view */
+                 String groupname = groupModelClass.grpname;
+                 int position = groupModelClass.id;
+                 list2.add(new ModelClass(groupname,position));
 
-        }
+             }
+             return list2;
+         };
+
 
     }
 
+     private Callable<List<PaslistClass>> getpasname()
+     {
+
+         return ()->
+         {
+             List<PaslistClass> list1 = new ArrayList<>();
+             DBClass db = new DBClass(this);
+             list1 =  db.readpasname();
+             return list1;
+         };
+     }
 
     private void recyclerinit() {
 
-        recyclerView = findViewById(R.id.recycler);   //finds recycler in main activity
-        linearLayoutManager = new LinearLayoutManager(this);
-        recyclerView.setLayoutManager(linearLayoutManager);
-        linearLayoutManager.setOrientation(RecyclerView.VERTICAL); //set the orientation of recyclerviwe
-        Adapter = new AdapterClass(grplist,paslist);
-        recyclerView.setAdapter(Adapter);
+        AtomicBoolean done = new AtomicBoolean(false);
+         executorService.execute(()->{
+          Future<List<PaslistClass>> list1 = executorService.submit(getpasname());
+             Future<List<ModelClass>> list2 = executorService.submit(datainit());
 
-    }
+             try {
+                 paslist = list1.get();
+             } catch (ExecutionException e) {
+                 e.printStackTrace();
+             } catch (InterruptedException e) {
+                 e.printStackTrace();
+             }
+             try {
+                 grplist = list2.get();
+             } catch (ExecutionException e) {
+                 e.printStackTrace();
+             } catch (InterruptedException e) {
+                 e.printStackTrace();
+             }
+
+             Adapter = new AdapterClass(grplist,paslist);
+
+             if(list1.isDone()&& list2.isDone())
+                 done.set(true);
+
+              while(true)
+              {
+                  if(list1.isDone()&&list2.isDone())
+                      break;
+              }
+              runOnUiThread(new Runnable() {
+                  @Override
+                  public void run() {
+                      recyclerView = findViewById(R.id.recycler);   //finds recycler in main activity
+                      linearLayoutManager = new LinearLayoutManager(MainActivity.this);
+                      recyclerView.setLayoutManager(linearLayoutManager);
+                      linearLayoutManager.setOrientation(RecyclerView.VERTICAL); //set the orientation of recyclerviwe
+                      recyclerView.setAdapter(Adapter);
+                  }
+              });
+
+         });
+
+        }
+
+
+
 
     private void fabview()
     {
@@ -150,12 +216,12 @@ public class MainActivity extends AppCompatActivity {
                 {
                     groupModelClass = new GroupModelClass(-1,name.getText().toString());
 
-                    new Thread(new Runnable() {
+                    executorService.execute(new Runnable() {
                         @Override
                         public void run() {
                             db.insertGroup(groupModelClass);
                         }
-                    }).start();
+                    });
                     newgroupname = groupModelClass.grpname;
                     updateRecyclerview(newgroupname);    // updates the recyclerview with new group
                     dialog.dismiss();        //dialog closes
@@ -310,13 +376,13 @@ public class MainActivity extends AppCompatActivity {
 
                     DBClass db = new DBClass(this);
                     PassModelClass passModelClass = new PassModelClass(title,usrname,paswrd,pastype,grpid,-1,color);
-                    new Thread(new Runnable() {
-                        public void run() {
-                            db.insertPass(passModelClass);
-                        }
-                    }).start();
 
-
+                       executorService.execute(new Runnable() {
+                           @Override
+                           public void run() {
+                               db.insertPass(passModelClass);
+                           }
+                       });
 
 
                     int pasid = paslist.size()+1;
@@ -336,10 +402,6 @@ public class MainActivity extends AppCompatActivity {
         Adapter.notifyItemInserted(grplist.size());
 
     }
-
-
-
-
 
     private void initblocklist()
     {

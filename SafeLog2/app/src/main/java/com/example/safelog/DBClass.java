@@ -144,4 +144,17 @@ public class DBClass extends SQLiteOpenHelper {
         return paswlist;
     }
 
+    public void deletegrppass(int grpid)
+    {
+        SQLiteDatabase db = getWritableDatabase(pascode);
+        String query = "DELETE FROM "+PASSWORD_TABLE+" WHERE "+GID_COLUMNP+" = "+grpid+"";
+        Cursor cursor = db.rawQuery(query,null);
+        if(cursor.moveToFirst())
+        { }
+        else
+        {}
+        cursor.close();
+        db.close();
+    }
+
 }

@@ -25,6 +25,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Executor;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 
 public class AdapterClass extends RecyclerView.Adapter<AdapterClass.ViewHolder>  {
@@ -32,9 +36,11 @@ public class AdapterClass extends RecyclerView.Adapter<AdapterClass.ViewHolder> 
 
     private List<ModelClass> grplist;
     public List<PaslistClass> paslist;
+    static int cores =Runtime.getRuntime().availableProcessors();
+    private  static ExecutorService adapter_executor = Executors.newFixedThreadPool(cores+1);
     Dialog dialog; // edit dialog
 
-    public AdapterClass(List<ModelClass> grplist ,List<PaslistClass> paslist)
+    public AdapterClass(List<ModelClass> grplist , List<PaslistClass> paslist)
     {
         this.grplist = grplist;
         this.paslist = paslist;
@@ -84,12 +90,7 @@ public class AdapterClass extends RecyclerView.Adapter<AdapterClass.ViewHolder> 
             Createtxt = itemView.findViewById(R.id.createtxtview);
             Addbtn = itemView.findViewById(R.id.plusimg);
             editgrpfun(); //function of edit buttton in the card
-            int i=0;
-
-
         }
-
-
 
         public void setdata(String heading) {
             Headingtxt.setText(heading);
@@ -98,7 +99,7 @@ public class AdapterClass extends RecyclerView.Adapter<AdapterClass.ViewHolder> 
         @SuppressLint("RestrictedApi")
         public  void btngen(int curcardpos)
         {
-            Log.d(TAG, "buttontest: this function is called ");
+
             LinearLayout row1 = itemView.findViewById(R.id.bntrow1);
             LinearLayout row2 = itemView.findViewById(R.id.bntrow2);
             LinearLayout row3 = itemView.findViewById(R.id.bntrow3);
@@ -107,27 +108,27 @@ public class AdapterClass extends RecyclerView.Adapter<AdapterClass.ViewHolder> 
 
                 pasgrplist = getgrpbtncnt(paslist, grplist.get(curcardpos).pos); //function to get password titles
                 int pascount = pasgrplist.size();  //count of total passwords in the current group
-                Log.d(TAG, "pasgrplist size: " + pascount);
+
                 if (pascount != 0) {
-                    int fixed_col = 3;
-                    int remain_col = 0;
+                    int fixed_col = 3;   // maximum number of columns of buttons (its not recommended to go beyond three coz can cause issue in 18:9 diplay)
+                    int remain_col = 0; // remaining columns
                     int cur_col;
                     int row;
                     int pending;
                     int curpos;
-                    row = pascount / fixed_col;
-                    pending = pascount % fixed_col;
-
-                    if (pascount % fixed_col == 0)
+                    row = pascount / fixed_col;     //to determine how many rows are required for n number of items for eg 12 items needs 4 rows (12/3)=4)
+                    pending = pascount % fixed_col;  // some times items may not be perfectly divisible by 3 so pending stores remaining columns for eg  if
+                                                     // no of items is 4 then 4/3 =1 so one row but one row can only contain 3 items so remaining 1 item is send to pending
+                    if (pascount % fixed_col == 0)    //this is to prevent adding extra columns if for eg if items is 3 3/3 =1 but we additional add one row in loop so to balance we use this operation
                         row--;
 
-                    if (pending > 0)
+                    if (pending > 0)                   //if pending is more than 0 there are items to be inserted in the next row
                         remain_col = pending;
-                    curpos = 0;
+                    curpos = 0;                        //this is used to find the current buttons id
                     for (int i = 0; i < row + 1; ++i) {
                         switch (i) {
                             case 0:
-                                row1.removeAllViews();
+                                row1.removeAllViews();   //removeallview is used to remove previously added buttons to remove duplication of buttons
                                 currow = row1;
                                 break;
                             case 1:
@@ -142,12 +143,12 @@ public class AdapterClass extends RecyclerView.Adapter<AdapterClass.ViewHolder> 
                                 currow = row1;
                         }
                         if (i == row && remain_col != 0)
-                            cur_col = remain_col;
+                            cur_col = remain_col;                //if we are on the last row and there is pending items we add those pending items to current row
                         else
                             cur_col = fixed_col;
                         for (int j = 0; j < cur_col; ++j) {
                             AppCompatButton btn = new AppCompatButton(itemView.getContext());
-                            Log.d(TAG, "buttontest: curpos" + curpos);
+
                             btn.setId(pasgrplist.get(curpos).pasid);
                             btn.setText(pasgrplist.get(curpos).title);
                             btn.setTextSize(itemView.getContext().getResources().getDimension(R.dimen.button_textsize));
@@ -155,9 +156,9 @@ public class AdapterClass extends RecyclerView.Adapter<AdapterClass.ViewHolder> 
                             btn.setBackgroundTintList(AppCompatResources.getColorStateList(itemView.getContext(), pasgrplist.get(curpos).color));
                             //  Typeface font= ResourcesCompat.getFont(itemView.getContext(), R.font.rubik_font);  NOT WORKING IN ANDROID 7
                             // btn.setTypeface(font);
+                            // btn.setPadding(50, 0, 50, 0); not needed right now padding looks good i guess
                             LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.MATCH_PARENT);
                             layoutParams.setMargins(5, 0, 5, 0);
-                           // btn.setPadding(50, 0, 50, 0);
                             btn.setLayoutParams(layoutParams);
                             btn.setAutoSizeTextTypeUniformWithConfiguration(12,15,2, TypedValue.COMPLEX_UNIT_DIP);
                             btn.setTextColor(AppCompatResources.getColorStateList(itemView.getContext(), R.color.white));
@@ -168,10 +169,7 @@ public class AdapterClass extends RecyclerView.Adapter<AdapterClass.ViewHolder> 
 
                 }
 
-
         }
-
-
 
         private void editgrpfun()
         {
@@ -224,7 +222,14 @@ public class AdapterClass extends RecyclerView.Adapter<AdapterClass.ViewHolder> 
                 @Override
                 public void onClick(View view) {
                     ModelClass grp = grplist.get(getAdapterPosition());  //gets the card's position in which edit button is clicked
-                    db.delGroup(grp.pos);                     //deletes that particular entry from database
+                    adapter_executor.execute(new Runnable() {
+                        @Override
+                        public void run() {
+                            db.delGroup(grp.pos);
+                            db.deletegrppass(grp.pos);
+                        }
+                    });
+                                        //deletes that particular entry from database
                     grplist.remove(getAdapterPosition());    // removes that particular card from recycler view
                     notifyItemRemoved(getAdapterPosition());
 
@@ -240,7 +245,13 @@ public class AdapterClass extends RecyclerView.Adapter<AdapterClass.ViewHolder> 
                     String newgrpname = name.getText().toString(); //gets new name from edittext
                     if(!newgrpname.isEmpty())
                     {
-                        db.renameGroup(newgrpname,grp);    //updates name in database
+                        adapter_executor.execute(new Runnable() {
+                            @Override
+                            public void run() {
+                                db.renameGroup(newgrpname,grp);  //updates name in database
+                            }
+                        });
+
 
                         grp.heading = newgrpname;           //changes name in recyclerview  card
                         grplist.set(getAdapterPosition(),grp);
