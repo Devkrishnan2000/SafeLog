@@ -27,6 +27,8 @@
         <item name="android:editTextBackground">@drawable/edittext_dark</item>
         <item name="blockspiner_background">@drawable/blockspinnerbackground_dark</item>
         <item name="android:popupBackground">@color/PrimaryBackgroundDark</item>
+        <item name="copy_icon">@drawable/ic_copyicon_dark</item>
+        <item name="eye_icon">@drawable/ic_eyeicon_dark</item>
 
 
     </style>

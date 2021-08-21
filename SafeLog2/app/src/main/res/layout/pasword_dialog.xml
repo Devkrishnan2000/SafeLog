@@ -145,10 +145,6 @@
             android:textAllCaps="false"
             android:textColor="@color/white"
             android:textSize="14dp" />
-
-
-
-
     </RelativeLayout>
 
 </com.google.android.material.card.MaterialCardView>

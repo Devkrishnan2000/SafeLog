@@ -6,4 +6,6 @@
     <attr name="group_head_color" format="color"/>
     <attr name="dialog_background" format="color"/>
     <attr name="blockspiner_background" format="reference"/>
+    <attr name="copy_icon" format="reference"/>
+    <attr name="eye_icon" format="reference"/>
 </resources>
