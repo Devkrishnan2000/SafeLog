@@ -4,12 +4,14 @@ import static android.service.controls.ControlsProviderService.TAG;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
+import android.text.InputType;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -18,6 +20,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.content.res.AppCompatResources;
 import androidx.appcompat.widget.AppCompatButton;
+import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
@@ -39,6 +42,7 @@ public class AdapterClass extends RecyclerView.Adapter<AdapterClass.ViewHolder> 
     static int cores =Runtime.getRuntime().availableProcessors();
     private  static ExecutorService adapter_executor = Executors.newFixedThreadPool(cores+1);
     Dialog dialog; // edit dialog
+    Dialog pasviewdialog; // pasword view dialog;
 
     public AdapterClass(List<ModelClass> grplist , List<PaslistClass> paslist)
     {
@@ -164,10 +168,73 @@ public class AdapterClass extends RecyclerView.Adapter<AdapterClass.ViewHolder> 
                             btn.setTextColor(AppCompatResources.getColorStateList(itemView.getContext(), R.color.white));
                             currow.addView(btn);
                             curpos++;
+                            Log.d(TAG, String.valueOf(btn.getId()));
+                            btn.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view ) {
+
+                                   setpasdialog();
+                                    Log.d(TAG, String.valueOf(btn.getId()));
+                                    getdet(btn.getId());
+                                   pasviewdialog.show();
+                                }
+                            });
                         }
                     }
 
                 }
+
+        }
+
+        private void setpasdialog()       // initializes setpasdialog
+        {
+           pasviewdialog = new Dialog(itemView.getContext());
+           pasviewdialog.setContentView(R.layout.passview_dialog);
+           pasviewdialog.getWindow().setBackgroundDrawable(ContextCompat.getDrawable(itemView.getContext(), R.drawable.dialog_background));
+           pasviewdialog.getWindow().setLayout(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT);
+
+           Button cancle_btn = pasviewdialog.findViewById(R.id.canclpasviewbtn);
+
+
+           cancle_btn.setOnClickListener(new View.OnClickListener() {
+               @Override
+               public void onClick(View view) {
+                   pasviewdialog.dismiss();
+               }
+           });
+        }
+
+        private void getdet(int id)        //gets data from databasr about password and username
+        {
+            DBClass db = new DBClass(itemView.getContext());
+            PasdatClass pasdata =db.getpass(id);
+
+             if(pasviewdialog!=null)
+             {
+                 EditText username = pasviewdialog.findViewById(R.id.usernametxt);
+                 EditText password = pasviewdialog.findViewById(R.id.passwordtxt);
+                 AppCompatImageButton paseye_btn = pasviewdialog.findViewById(R.id.paseye);
+
+                 paseye_btn.setOnClickListener(new View.OnClickListener() {
+                     @Override
+                     public void onClick(View view) {
+                         if(password.getInputType()==(InputType.TYPE_CLASS_TEXT|InputType.TYPE_TEXT_VARIATION_PASSWORD))
+                         {
+                             password.setInputType(InputType.TYPE_CLASS_TEXT|InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
+                         }
+                         else
+                         {
+                             password.setInputType(InputType.TYPE_CLASS_TEXT|InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                         }
+
+
+                     }
+                 });
+
+
+                 username.setText(pasdata.username);
+                 password.setText(pasdata.paswrd);
+             }
 
         }
 

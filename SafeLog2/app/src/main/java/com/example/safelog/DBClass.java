@@ -157,4 +157,23 @@ public class DBClass extends SQLiteOpenHelper {
         db.close();
     }
 
+    public PasdatClass getpass(int pasid)
+    {
+        PasdatClass paswrddata = new PasdatClass();
+        SQLiteDatabase db = getReadableDatabase(pascode);
+        String query = "SELECT "+PASTYPE_COLUMN+","+PASSWORD_COLUMN+","+USERNAME_COLUMN+" FROM "+PASSWORD_TABLE+" WHERE "+PID_COLUMN+" = "+pasid+"";
+        Cursor cursor = db.rawQuery(query,null);
+        if(cursor.moveToFirst())
+        {
+                paswrddata.username =cursor.getString(2);
+                paswrddata.paswrd =cursor.getString(1);
+                paswrddata.paswtype =cursor.getString(0);
+        }
+        else
+        {}
+        cursor.close();
+        db.close();
+        return  paswrddata;
+    }
+
 }
