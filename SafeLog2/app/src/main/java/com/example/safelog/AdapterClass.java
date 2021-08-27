@@ -8,10 +8,15 @@ import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.ClipboardManager;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.res.ColorStateList;
+import android.os.Looper;
+import android.text.Editable;
 import android.text.InputType;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.util.TypedValue;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +28,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.UiThread;
 import androidx.appcompat.content.res.AppCompatResources;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatImageButton;
@@ -48,6 +54,7 @@ public class AdapterClass extends RecyclerView.Adapter<AdapterClass.ViewHolder> 
     public List<PaslistClass> paslist;
     static int cores =Runtime.getRuntime().availableProcessors();
     private  static ExecutorService adapter_executor = Executors.newFixedThreadPool(cores+1);
+    boolean btn_del = false;
     Dialog dialog; // edit dialog
     Dialog pasviewdialog; // pasword view dialog;
 
@@ -181,9 +188,22 @@ public class AdapterClass extends RecyclerView.Adapter<AdapterClass.ViewHolder> 
                                 public void onClick(View view ) {
 
                                    setpasdialog();
-                                    Log.d(TAG, String.valueOf(btn.getId()));
-                                    getdet(btn.getId(),String.valueOf(btn.getText()),btn.getBackgroundTintList().getDefaultColor());
+                                   getdet(btn.getId(),String.valueOf(btn.getText()),btn.getBackgroundTintList().getDefaultColor());
+                                    Log.d(TAG, "onClick: "+String.valueOf(btn.getId()));
                                    pasviewdialog.show();
+                                   pasviewdialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                                       @Override
+                                       public void onDismiss(DialogInterface dialogInterface) {
+                                           Log.d(TAG, "onClick: "+btn_del);
+                                           if(btn_del)
+                                           {
+                                               btn.setVisibility(View.GONE);
+                                               btn_del=false;
+                                           }
+                                       }
+                                   });
+
+
                                 }
                             });
                         }
@@ -226,6 +246,48 @@ public class AdapterClass extends RecyclerView.Adapter<AdapterClass.ViewHolder> 
                  AppCompatImageButton paseye_btn = pasviewdialog.findViewById(R.id.paseye);
                  AppCompatImageButton usercopy = pasviewdialog.findViewById(R.id.usercopy);
                  AppCompatImageButton passcopy = pasviewdialog.findViewById(R.id.pascopy);
+                 AppCompatImageButton delbtn =  pasviewdialog.findViewById(R.id.delpasbtn);
+                 AppCompatButton savbtn = pasviewdialog.findViewById(R.id.savepasviewbtn);
+                 TextWatcher checkempty = new TextWatcher() {
+                     @Override
+                     public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                     }
+
+                     @Override
+                     public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                         String pas = password.getText().toString();
+                         String usr = username.getText().toString();
+                         Log.d(TAG, "onTextChanged: "+usr);
+
+                         if(pas.isEmpty()&& usr.isEmpty())
+                         {
+                             savbtn.setEnabled(false);
+                             savbtn.setBackgroundTintList(AppCompatResources.getColorStateList(itemView.getContext(),R.color.grey));
+                         }
+                         else if(usr.isEmpty()||pas.isEmpty())
+                         {
+                             savbtn.setEnabled(false);
+                             savbtn.setBackgroundTintList(AppCompatResources.getColorStateList(itemView.getContext(),R.color.grey));
+                         }
+                         else
+                         {
+                             savbtn.setEnabled(true);
+                             savbtn.setBackgroundTintList(AppCompatResources.getColorStateList(itemView.getContext(),R.color.TitleBarColour));
+                         }
+
+
+
+                     }
+
+                     @Override
+                     public void afterTextChanged(Editable editable) {
+
+                     }
+                 };
+
+
+
                  paseye_btn.setOnClickListener(new View.OnClickListener() {
                      @Override
                      public void onClick(View view) {
@@ -262,17 +324,74 @@ public class AdapterClass extends RecyclerView.Adapter<AdapterClass.ViewHolder> 
                      }
                  });
 
+                 delbtn.setOnClickListener(new View.OnClickListener() {
+                     @Override
+                     public void onClick(View view) {
+                         adapter_executor.execute(new Runnable() {
+                             @Override
+                             public void run() {
+
+                                 DBClass db = new DBClass(pasviewdialog.getContext());
+                                 db.delpass(id);
+                             }
+                         });
+                         int pos=0;
+                         int i=0;
+                         for (PaslistClass paswd:paslist) {
+
+                             if(paswd.pasid==id)
+                             {
+                                 pos = i;
+                             }
+                             i++;
+                         }
+                         btn_del = true;
+                         paslist.remove(pos);
+                         pasviewdialog.dismiss();
+
+                     }
+                 });
+
+                 savbtn.setOnClickListener(new View.OnClickListener() {
+                     @Override
+                     public void onClick(View view) {
+
+                         if(username.getText().toString().equals(pasdata.username)&& password.getText().toString().equals(pasdata.paswrd))
+                         {
+                             Toast.makeText(pasviewdialog.getContext(),"No changes have made in username or password !",Toast.LENGTH_SHORT).show();
+                         }
+                         else
+                         {
+                             adapter_executor.execute(new Runnable() {
+                                 @Override
+                                 public void run() {
+
+                                     PasdatClass curpas = new PasdatClass();
+                                     curpas.username =username.getText().toString();
+                                     curpas.paswrd = password.getText().toString();
+                                     curpas.paswtype = "null";
+                                     DBClass db = new DBClass(pasviewdialog.getContext());
+                                     db.editpas(id,curpas);
+
+                                 }
+                             });
+
+                             Toast.makeText(pasviewdialog.getContext(),"Changes Saved",Toast.LENGTH_SHORT).show();
+                         }
 
 
+                     }
+                 });
 
 
                  username.setText(pasdata.username);
-                 passtitle.setText(title);
-                 Log.d(TAG, "button color: "+color);
-                 passcard.setBackgroundTintList(ColorStateList.valueOf(color));
                  password.setText(pasdata.paswrd);
-             }
+                 username.addTextChangedListener(checkempty);
+                 password.addTextChangedListener(checkempty);
+                 passtitle.setText(title);
+                 passcard.setBackgroundTintList(ColorStateList.valueOf(color));
 
+             }
         }
 
         private void editgrpfun()

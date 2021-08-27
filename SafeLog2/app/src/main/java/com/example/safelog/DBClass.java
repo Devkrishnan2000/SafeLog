@@ -176,4 +176,29 @@ public class DBClass extends SQLiteOpenHelper {
         return  paswrddata;
     }
 
+    public void delpass(int pasid)
+    {
+        SQLiteDatabase db = getReadableDatabase(pascode);
+        String query = "DELETE FROM "+PASSWORD_TABLE+" WHERE "+PID_COLUMN+" = "+pasid+"";
+        Cursor cursor = db.rawQuery(query,null);
+        if(cursor.moveToFirst())
+        {
+
+        }
+        else
+        {}
+        cursor.close();
+        db.close();
+    }
+
+    public void editpas(int pasid, PasdatClass paswrd)
+    {
+        SQLiteDatabase db = getWritableDatabase(pascode);
+        String query = "UPDATE "+PASSWORD_TABLE+" SET "+USERNAME_COLUMN+"='"+paswrd.username+"',"+PASSWORD_COLUMN+"= '"+paswrd.paswrd+"' WHERE "+PID_COLUMN+"= "+pasid+"";
+        Cursor cursor = db.rawQuery(query,null);
+        cursor.moveToFirst();
+        cursor.close();
+        db.close();
+    }
+
 }

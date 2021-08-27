@@ -390,8 +390,13 @@ public class MainActivity extends AppCompatActivity {
                            }
                        });
 
+                    int pasid=1;
+                       try{
+                           pasid= paslist.get(paslist.size()-1).pasid+1;
+                       }
+                       catch (ArrayIndexOutOfBoundsException ignored){}
 
-                    int pasid = paslist.size()+1;
+
                     PaslistClass item = new PaslistClass(pasid,title,grpid,color);
                     Adapter.notifyItemChanged(grppos);
                     paslist.add(item);

@@ -32,16 +32,6 @@
                     android:textSize="18dp" />
 
                 <ImageButton
-                    android:id="@+id/editpasbtn"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="?android:selectableItemBackground"
-                    android:layout_alignParentEnd="true"
-                    android:padding="10dp"
-                    android:layout_centerVertical="true"
-                    android:src="@drawable/ic_edit_icon_dark" />
-
-                <ImageButton
                     android:id="@+id/delpasbtn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -49,7 +39,7 @@
                     android:background="?android:selectableItemBackground"
                     android:layout_marginEnd="5dp"
                     android:padding="10dp"
-                    android:layout_toStartOf="@id/editpasbtn"
+                    android:layout_alignParentEnd="true"
                     android:src="@drawable/ic_del_icon_dark" />
 
 
@@ -151,17 +141,35 @@
             android:id="@+id/canclpasviewbtn"
             android:layout_width="88dp"
             android:layout_height="45dp"
-            android:layout_alignStart="@id/passwordtxt"
             android:layout_below="@id/passwordtxt"
+            android:layout_alignStart="@id/passwordtxt"
             android:layout_marginStart="10dp"
-            android:layout_marginBottom="10dp"
-            android:layout_marginEnd="10dp"
             android:layout_marginTop="20dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="10dp"
             android:backgroundTint="@color/TitleBarColour"
             android:fontFamily="@font/poppins_regular"
             android:gravity="center"
             android:letterSpacing="0"
             android:text="Cancel"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="14dp" />
+        <Button
+            android:id="@+id/savepasviewbtn"
+            android:layout_width="88dp"
+            android:layout_height="45dp"
+            android:layout_below="@id/passwordtxt"
+            android:layout_alignEnd="@id/passwordtxt"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="10dp"
+            android:backgroundTint="@color/TitleBarColour"
+            android:fontFamily="@font/poppins_regular"
+            android:gravity="center"
+            android:letterSpacing="0"
+            android:text="Save"
             android:textAllCaps="false"
             android:textColor="@color/white"
             android:textSize="14dp" />
