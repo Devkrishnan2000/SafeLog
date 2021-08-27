@@ -2,8 +2,13 @@ package com.example.safelog;
 
 import static android.service.controls.ControlsProviderService.TAG;
 
+import static androidx.core.content.ContextCompat.getSystemService;
+
 import android.annotation.SuppressLint;
 import android.app.Dialog;
+import android.content.ClipboardManager;
+import android.content.Context;
+import android.content.res.ColorStateList;
 import android.text.InputType;
 import android.util.Log;
 import android.util.TypedValue;
@@ -25,6 +30,8 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.android.material.card.MaterialCardView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -175,7 +182,7 @@ public class AdapterClass extends RecyclerView.Adapter<AdapterClass.ViewHolder> 
 
                                    setpasdialog();
                                     Log.d(TAG, String.valueOf(btn.getId()));
-                                    getdet(btn.getId());
+                                    getdet(btn.getId(),String.valueOf(btn.getText()),btn.getBackgroundTintList().getDefaultColor());
                                    pasviewdialog.show();
                                 }
                             });
@@ -204,17 +211,21 @@ public class AdapterClass extends RecyclerView.Adapter<AdapterClass.ViewHolder> 
            });
         }
 
-        private void getdet(int id)        //gets data from databasr about password and username
+        private void getdet(int id,String title,int color)        //gets data from databasr about password and username
         {
             DBClass db = new DBClass(itemView.getContext());
             PasdatClass pasdata =db.getpass(id);
 
              if(pasviewdialog!=null)
              {
+                 ClipboardManager clipboard = (android.content.ClipboardManager) pasviewdialog.getContext().getSystemService(Context.CLIPBOARD_SERVICE);
                  EditText username = pasviewdialog.findViewById(R.id.usernametxt);
                  EditText password = pasviewdialog.findViewById(R.id.passwordtxt);
+                 TextView passtitle = pasviewdialog.findViewById(R.id.passviewtitle);
+                 MaterialCardView passcard = pasviewdialog.findViewById(R.id.passviewtitlecard);
                  AppCompatImageButton paseye_btn = pasviewdialog.findViewById(R.id.paseye);
-
+                 AppCompatImageButton usercopy = pasviewdialog.findViewById(R.id.usercopy);
+                 AppCompatImageButton passcopy = pasviewdialog.findViewById(R.id.pascopy);
                  paseye_btn.setOnClickListener(new View.OnClickListener() {
                      @Override
                      public void onClick(View view) {
@@ -231,8 +242,34 @@ public class AdapterClass extends RecyclerView.Adapter<AdapterClass.ViewHolder> 
                      }
                  });
 
+                 usercopy.setOnClickListener(new View.OnClickListener() {
+                     @Override
+                     public void onClick(View view) {
+
+                         android.content.ClipData clip = android.content.ClipData.newPlainText("Copied Text",username.getText());
+                         clipboard.setPrimaryClip(clip);
+                         Toast.makeText(pasviewdialog.getContext(),"Username Copied",Toast.LENGTH_SHORT).show();
+                     }
+                 });
+
+                 passcopy.setOnClickListener(new View.OnClickListener() {
+                     @Override
+                     public void onClick(View view) {
+                         android.content.ClipData clip = android.content.ClipData.newPlainText("Copied Text",password.getText());
+                         clipboard.setPrimaryClip(clip);
+                         Toast.makeText(pasviewdialog.getContext(),"Password Copied",Toast.LENGTH_SHORT).show();
+
+                     }
+                 });
+
+
+
+
 
                  username.setText(pasdata.username);
+                 passtitle.setText(title);
+                 Log.d(TAG, "button color: "+color);
+                 passcard.setBackgroundTintList(ColorStateList.valueOf(color));
                  password.setText(pasdata.paswrd);
              }
 

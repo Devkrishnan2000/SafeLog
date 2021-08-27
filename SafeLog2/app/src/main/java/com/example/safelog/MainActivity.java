@@ -212,24 +212,30 @@ public class MainActivity extends AppCompatActivity {
                 DBClass db = new DBClass(MainActivity.this);
                 GroupModelClass groupModelClass;
                 String newgroupname;
-                try
+                if(!name.getText().toString().isEmpty())
                 {
-                    groupModelClass = new GroupModelClass(-1,name.getText().toString());
+                    try
+                    {
+                        groupModelClass = new GroupModelClass(-1,name.getText().toString());
 
-                    executorService.execute(new Runnable() {
-                        @Override
-                        public void run() {
-                            db.insertGroup(groupModelClass);
-                        }
-                    });
-                    newgroupname = groupModelClass.grpname;
-                    updateRecyclerview(newgroupname);    // updates the recyclerview with new group
-                    dialog.dismiss();        //dialog closes
-                }
-                catch(Exception e)
-                {
+                        executorService.execute(new Runnable() {
+                            @Override
+                            public void run() {
+                                db.insertGroup(groupModelClass);
+                            }
+                        });
+                        newgroupname = groupModelClass.grpname;
+                        updateRecyclerview(newgroupname);    // updates the recyclerview with new group
+                        dialog.dismiss();        //dialog closes
+                    }
+                    catch(Exception e)
+                    {
 
+                    }
                 }
+                else
+                    Toast.makeText(this,"Group name Cannot Be Empty",Toast.LENGTH_SHORT).show();
+
             });
 
             //once the dialog is opened these buttons need to be hide so that they are not obstructing the view

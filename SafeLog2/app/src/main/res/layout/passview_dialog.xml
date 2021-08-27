@@ -77,17 +77,18 @@
             android:layout_below="@id/usernamehead"
             android:singleLine="true"
             android:layout_margin="10dp"/>
+
         <ImageButton
             android:id="@+id/usercopy"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_copyicon_dark"
-            android:layout_alignRight="@id/usernametxt"
-            android:paddingEnd="10dp"
-            android:paddingStart="10dp"
-            android:background="?android:selectableItemBackground"
             android:layout_alignTop="@id/usernametxt"
-            android:layout_alignBottom="@id/usernametxt"/>
+            android:layout_alignRight="@id/usernametxt"
+            android:layout_alignBottom="@id/usernametxt"
+            android:background="?android:selectableItemBackground"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
+            android:src="?attr/copy_icon" />
 
         <TextView
             android:id="@+id/passwordhead"
@@ -119,26 +120,26 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@color/TextboxColourDark"
+                android:background="?attr/group_col"
                 android:orientation="horizontal">
 
                 <ImageButton
                     android:id="@+id/paseye"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/ic_eyeicon_dark"
+                    android:src="?attr/eye_icon"
                     android:layout_toStartOf="@id/pascopy"
-                    android:backgroundTint="@color/TextboxColourDark"
+                    android:backgroundTint="?attr/group_col"
                     android:paddingEnd="10dp"
                     android:paddingStart="10dp"/>
                 <ImageButton
                     android:id="@+id/pascopy"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:backgroundTint="@color/TextboxColourDark"
+                    android:backgroundTint="?attr/group_col"
                     android:paddingStart="10dp"
                     android:paddingEnd="10dp"
-                    android:src="@drawable/ic_copyicon_dark" />
+                    android:src="?attr/copy_icon" />
 
             </LinearLayout>
 

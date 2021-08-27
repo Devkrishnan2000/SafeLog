@@ -24,5 +24,6 @@
         <item name="blockspiner_background">@drawable/blockspinnerbackground_light</item>
         <item name="copy_icon">@drawable/ic_copyicon_light</item>
         <item name ="eye_icon">@drawable/ic_eyeicon_light</item>
+        <item name="group_col">@color/TextboxColourLight</item>
     </style>
 </resources>
