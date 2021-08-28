@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".CreatePin">
+
+   <RelativeLayout
+       android:layout_width="match_parent"
+       android:layout_height="match_parent"
+       android:padding="20dp">
+       <TextView
+           android:id="@+id/pinheading"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:text="Create\nMaster PIN"
+           android:fontFamily="@font/poppins_regular"
+           android:textSize="48dp"/>
+
+       <EditText
+           android:id="@+id/enterpin"
+           android:layout_width="301dp"
+           android:layout_height="53dp"
+           android:layout_below="@id/pinheading"
+           android:layout_centerHorizontal="true"
+           android:layout_marginTop="100dp"
+           android:padding="7dp"
+           android:hint="Enter Master PIN"/>
+
+       <EditText
+           android:id="@+id/reenterpin"
+           android:layout_width="301dp"
+           android:layout_height="53dp"
+           android:layout_below="@id/enterpin"
+           android:layout_centerHorizontal="true"
+           android:layout_marginTop="50dp"
+           android:padding="7dp"
+           android:hint="Re-Enter Master PIN"/>
+
+       <TextView
+           android:id="@+id/pin_para"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:fontFamily="@font/poppins_regular"
+           android:textSize="18dp"
+           android:text="Master Pin is used to unlock your SafeLog vault. Make sure you always remember the Master PIN.Master Pin is used to unlock your SafeLog vault. Make sure you always remember the Master PIN."
+           android:layout_below="@id/reenterpin"
+           android:layout_marginTop="80dp"/>
+
+       <androidx.appcompat.widget.AppCompatButton
+           android:id="@+id/contpin_btn"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:fontFamily="@font/poppins_regular"
+           android:textSize="14dp"
+           android:text="Continue"
+          android:layout_alignParentBottom="true"
+           android:layout_centerHorizontal="true"
+           android:backgroundTint="@color/TitleBarColour"
+           android:layout_marginTop="5dp"
+           android:layout_marginBottom="10dp"/>
+
+   </RelativeLayout>
+
+</FrameLayout>

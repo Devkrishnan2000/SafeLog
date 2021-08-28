@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".WelcomeScreen">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fontFamily="@font/poppins_regular"
+            android:padding="10dp"
+            android:text="Welcome\nTo\nSafeLog"
+            android:textSize="64dp" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Continue"
+            android:fontFamily="@font/poppins_regular"
+            android:textSize="18dp"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:backgroundTintMode="add"
+            android:background="@drawable/continue_btn"
+            android:layout_marginBottom="30dp"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:paddingStart="40dp"
+            android:paddingEnd="40dp"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+
+            />
+
+    </RelativeLayout>
+
+
+</FrameLayout>

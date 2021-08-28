@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".BuildInfo">
+
+   <RelativeLayout
+       android:layout_width="match_parent"
+       android:layout_height="match_parent"
+       android:padding="20dp">
+
+       <TextView
+           android:id="@+id/heading"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:text="ALPHA\nBuild"
+           android:textSize="48dp"
+           android:fontFamily="@font/poppins_regular" />
+
+       <TextView
+           android:layout_width="wrap_content"
+           android:id="@+id/paratext"
+           android:layout_height="wrap_content"
+           android:layout_below="@id/heading"
+           android:fontFamily="@font/poppins_regular"
+           android:textSize="18dp"
+           android:layout_marginTop="30dp"
+           android:text="You are using an Alpha build of SafeLog.This version has not been tested before and may contain severe bugs and glitches and may result in data loss."/>
+
+       <ImageView
+           android:layout_width="300dp"
+           android:layout_height="300dp"
+           android:layout_marginTop="50dp"
+           android:layout_below="@id/paratext"
+           android:layout_centerHorizontal="true"
+           android:src="@drawable/ic_bug_svgrepo_com"/>
+
+       <androidx.appcompat.widget.AppCompatButton
+           android:id="@+id/exit_btn"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:text="Exit"
+           android:textAllCaps="false"
+           android:backgroundTint="@color/TitleBarColour"
+           android:fontFamily="@font/poppins_regular"
+           android:layout_alignParentStart="true"
+           android:layout_alignParentBottom="true"/>
+
+       <androidx.appcompat.widget.AppCompatButton
+           android:id="@+id/contwrisk_btn"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:text="Continue with Risk"
+           android:fontFamily="@font/poppins_regular"
+           android:textAllCaps="false"
+           android:backgroundTint="@color/TitleBarColour"
+           android:layout_alignParentEnd="true"
+           android:layout_alignParentBottom="true"/>
+
+
+   </RelativeLayout>
+
+</FrameLayout>
