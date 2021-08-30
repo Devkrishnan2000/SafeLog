@@ -25,5 +25,6 @@
         <item name="copy_icon">@drawable/ic_copyicon_light</item>
         <item name ="eye_icon">@drawable/ic_eyeicon_light</item>
         <item name="group_col">@color/TextboxColourLight</item>
+        <item name="ic_lock">@drawable/ic_lock_light</item>
     </style>
 </resources>

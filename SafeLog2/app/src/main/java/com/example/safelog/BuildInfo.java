@@ -2,11 +2,17 @@ package com.example.safelog;
 
 import android.os.Bundle;
 
+import androidx.appcompat.widget.AppCompatButton;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
+import android.text.SpannableStringBuilder;
+import android.text.Spanned;
+import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -59,6 +65,25 @@ public class BuildInfo extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_build_info, container, false);
+         View view  = inflater.inflate(R.layout.fragment_build_info, container, false);
+        AppCompatButton cntwr_btn = view.findViewById(R.id.contwrisk_btn);
+        AppCompatButton exit_btn = view.findViewById(R.id.exit_btn);
+        TextView heading = view.findViewById(R.id.heading);
+
+        SpannableStringBuilder spannableStringBuilder = new SpannableStringBuilder("ALPHA\nBuild");
+        spannableStringBuilder.setSpan(
+                new ForegroundColorSpan(getResources().getColor(R.color.red)),0,5, Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
+        heading.setText(spannableStringBuilder);
+
+        cntwr_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                fragmentManager.beginTransaction()
+                        .replace(R.id.fragframe,CreatePin.class,null)
+                        .commit();
+            }
+        });
+         return view;
     }
 }

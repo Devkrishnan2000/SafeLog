@@ -8,17 +8,20 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:padding="10dp">
 
         <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:id="@+id/header"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:fontFamily="@font/poppins_regular"
-            android:padding="10dp"
             android:text="Welcome\nTo\nSafeLog"
-            android:textSize="64dp" />
+            android:textSize="48dp" />
+
 
         <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/continuebtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Continue"
@@ -31,10 +34,13 @@
             android:layout_marginBottom="30dp"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
-            android:paddingStart="40dp"
-            android:paddingEnd="40dp"
+            android:layout_centerVertical="true"
+            android:paddingStart="120dp"
+            android:paddingEnd="120dp"
             android:paddingTop="10dp"
             android:paddingBottom="10dp"
+            android:layout_marginVertical="100dp"
+
 
             />
 

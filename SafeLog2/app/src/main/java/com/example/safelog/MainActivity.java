@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.Dialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -74,13 +75,22 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        boolean isfirstrun = getSharedPreferences("FIRSTRUN",MODE_PRIVATE).getBoolean("isfirstrun",true);
+
+
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        cores = Runtime.getRuntime().availableProcessors();
-        executorService = Executors.newFixedThreadPool(cores+1);
-        SQLiteDatabase.loadLibs(this);
-        fabview();                    // initialises fab buttons (add password and add group button)// initialises data for recycler view
-        recyclerinit();              // initialises recyclerview
+        if(!isfirstrun)
+        {
+            cores = Runtime.getRuntime().availableProcessors();
+            executorService = Executors.newFixedThreadPool(cores+1);
+            SQLiteDatabase.loadLibs(this);
+            fabview();                    // initialises fab buttons (add password and add group button)// initialises data for recycler view
+            recyclerinit();              // initialises recyclerview
+        }
+
+
     }
 
     public void exestop()
@@ -178,7 +188,6 @@ public class MainActivity extends AppCompatActivity {
         adpasbtn = findViewById(R.id.addpasbtn);
         adgrpbtn = findViewById(R.id.addgrpbtn);
         addbtn = findViewById(R.id.mainaddbtn);
-
          /*adpasbtn and adgrpbtn are initially set to visibility GONE since they only appear if we press addbtn */
         adpasbtn.setVisibility(View.GONE);
         adgrpbtn.setVisibility(View.GONE);

@@ -14,9 +14,9 @@
            android:id="@+id/heading"
            android:layout_width="wrap_content"
            android:layout_height="wrap_content"
+           android:fontFamily="@font/poppins_regular"
            android:text="ALPHA\nBuild"
-           android:textSize="48dp"
-           android:fontFamily="@font/poppins_regular" />
+           android:textSize="48dp" />
 
        <TextView
            android:layout_width="wrap_content"
@@ -29,12 +29,12 @@
            android:text="You are using an Alpha build of SafeLog.This version has not been tested before and may contain severe bugs and glitches and may result in data loss."/>
 
        <ImageView
-           android:layout_width="300dp"
-           android:layout_height="300dp"
-           android:layout_marginTop="50dp"
+           android:layout_width="150dp"
+           android:layout_height="150dp"
            android:layout_below="@id/paratext"
-           android:layout_centerHorizontal="true"
-           android:src="@drawable/ic_bug_svgrepo_com"/>
+           android:layout_centerInParent="true"
+           android:layout_marginTop="50dp"
+           android:src="@drawable/ic_bug_svgrepo_com" />
 
        <androidx.appcompat.widget.AppCompatButton
            android:id="@+id/exit_btn"
@@ -44,6 +44,8 @@
            android:textAllCaps="false"
            android:backgroundTint="@color/TitleBarColour"
            android:fontFamily="@font/poppins_regular"
+           android:textSize="14dp"
+           android:textColor="@color/white"
            android:layout_alignParentStart="true"
            android:layout_alignParentBottom="true"/>
 
@@ -51,12 +53,14 @@
            android:id="@+id/contwrisk_btn"
            android:layout_width="wrap_content"
            android:layout_height="wrap_content"
-           android:text="Continue with Risk"
-           android:fontFamily="@font/poppins_regular"
-           android:textAllCaps="false"
-           android:backgroundTint="@color/TitleBarColour"
            android:layout_alignParentEnd="true"
-           android:layout_alignParentBottom="true"/>
+           android:layout_alignParentBottom="true"
+           android:backgroundTint="@color/TitleBarColour"
+           android:fontFamily="@font/poppins_regular"
+           android:textSize="14dp"
+           android:textColor="@color/white"
+           android:text="Continue with Risk"
+           android:textAllCaps="false" />
 
 
    </RelativeLayout>

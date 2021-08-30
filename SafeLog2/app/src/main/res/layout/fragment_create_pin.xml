@@ -21,11 +21,24 @@
            android:id="@+id/enterpin"
            android:layout_width="301dp"
            android:layout_height="53dp"
-           android:layout_below="@id/pinheading"
+           android:layout_below="@id/pin_para"
            android:layout_centerHorizontal="true"
-           android:layout_marginTop="100dp"
+           android:layout_marginTop="30dp"
            android:padding="7dp"
            android:hint="Enter Master PIN"/>
+
+       <ImageButton
+           android:id="@+id/entereye"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:src="?attr/eye_icon"
+           android:layout_alignEnd="@id/enterpin"
+           android:background="?attr/editTextBackground"
+           android:paddingStart="10dp"
+           android:paddingEnd="10dp"
+           android:layout_alignBottom="@id/enterpin"
+           android:layout_alignTop="@id/enterpin"/>
+
 
        <EditText
            android:id="@+id/reenterpin"
@@ -37,28 +50,46 @@
            android:padding="7dp"
            android:hint="Re-Enter Master PIN"/>
 
+       <ImageButton
+           android:id="@+id/rentereye"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:src="?attr/eye_icon"
+           android:layout_alignEnd="@id/reenterpin"
+           android:background="?attr/editTextBackground"
+           android:paddingStart="10dp"
+           android:paddingEnd="10dp"
+           android:layout_alignBottom="@id/reenterpin"
+           android:layout_alignTop="@id/reenterpin"/>
+
        <TextView
            android:id="@+id/pin_para"
            android:layout_width="wrap_content"
            android:layout_height="wrap_content"
            android:fontFamily="@font/poppins_regular"
            android:textSize="18dp"
-           android:text="Master Pin is used to unlock your SafeLog vault. Make sure you always remember the Master PIN.Master Pin is used to unlock your SafeLog vault. Make sure you always remember the Master PIN."
-           android:layout_below="@id/reenterpin"
-           android:layout_marginTop="80dp"/>
+           android:text="Master Pin is used to unlock your SafeLog vault. Make sure you always remember the Master PIN."
+           android:layout_below="@id/pinheading"
+           android:layout_marginTop="10dp"/>
 
        <androidx.appcompat.widget.AppCompatButton
            android:id="@+id/contpin_btn"
            android:layout_width="wrap_content"
            android:layout_height="wrap_content"
+           android:background="@drawable/continue_btn"
            android:fontFamily="@font/poppins_regular"
            android:textSize="14dp"
            android:text="Continue"
-          android:layout_alignParentBottom="true"
+           android:textColor="@color/white"
+           android:textAllCaps="false"
+           android:layout_below="@id/reenterpin"
            android:layout_centerHorizontal="true"
            android:backgroundTint="@color/TitleBarColour"
-           android:layout_marginTop="5dp"
-           android:layout_marginBottom="10dp"/>
+           android:paddingStart="120dp"
+           android:paddingEnd="120dp"
+           android:paddingTop="10dp"
+           android:paddingBottom="10dp"
+           android:layout_marginTop="40dp"/>
 
    </RelativeLayout>
 

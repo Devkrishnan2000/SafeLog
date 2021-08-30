@@ -71,6 +71,7 @@
         android:clickable="true"
         android:textAllCaps="false"
         android:text="Create new Group"
+        android:textSize="14dp"
         android:fontFamily="@font/poppins_regular"
         android:textColor="@color/white"
         android:layout_alignParentEnd="true"
@@ -92,7 +93,7 @@
         android:layout_alignParentEnd="true"
         android:layout_marginEnd="12.5dp"
         android:text="Create new Password"
-
+        android:textSize="14dp"
         android:fontFamily="@font/poppins_regular"
         android:textColor="@color/white"
         android:textAllCaps="false"

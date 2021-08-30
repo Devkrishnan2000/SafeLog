@@ -2,11 +2,20 @@ package com.example.safelog;
 
 import android.os.Bundle;
 
+import androidx.appcompat.widget.AppCompatButton;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
+import android.text.Spannable;
+import android.text.SpannableStringBuilder;
+import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import java.util.Objects;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -58,7 +67,26 @@ public class WelcomeScreen extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_welcome_screen, container, false);
+        View view = inflater.inflate(R.layout.fragment_welcome_screen, container, false);
+
+         AppCompatButton contbtn = view.findViewById(R.id.continuebtn);
+        TextView heading = view.findViewById(R.id.header);
+
+        SpannableStringBuilder spannableStringBuilder = new SpannableStringBuilder("Welcome\nTo\nSafeLog");
+        spannableStringBuilder.setSpan(
+                new ForegroundColorSpan(getResources().getColor(R.color.TitleBarColour)),10,18, Spannable.SPAN_EXCLUSIVE_INCLUSIVE);
+        heading.setText(spannableStringBuilder);
+
+         contbtn.setOnClickListener(new View.OnClickListener() {
+             @Override
+             public void onClick(View view) {
+                 FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                 fragmentManager.beginTransaction()
+                         .replace(R.id.fragframe,BuildInfo.class,null)
+                         .commit();
+             }
+         });
+        return view;
+
     }
 }

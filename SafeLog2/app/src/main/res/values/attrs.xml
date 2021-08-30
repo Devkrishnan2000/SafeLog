@@ -9,4 +9,5 @@
     <attr name="copy_icon" format="reference"/>
     <attr name="eye_icon" format="reference"/>
     <attr name="group_col" format="color"/>     <!--this is responsible for the backgroumd color of paseye and pascopy !-->
+    <attr name="ic_lock" format="reference"/>
 </resources>

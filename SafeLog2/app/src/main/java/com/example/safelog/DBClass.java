@@ -3,6 +3,7 @@ package com.example.safelog;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.util.Log;
 
 import  net.sqlcipher.database.SQLiteDatabase;
 import net.sqlcipher.database.SQLiteOpenHelper;
@@ -16,9 +17,7 @@ public class DBClass extends SQLiteOpenHelper {
     public static final String GID_COLUMN = "COLUMN_GID";
     public static final String GNAME_COLUMN = "COLUMN_GNAME";
     public static final String GROUP_TABLE = "GROUP_TABLE";
-
-    public static final String pascode ="dev@123"; // for test purposes
-
+    public String pascode =Keyclass.getKey().pascode;// for test purposes dev@123
     public static final String PASSWORD_TABLE = "PASSWORD_TABLE";
     public static final String PID_COLUMN = "PID_COLUMN";
     public static final String PNAME_COLUMN = "PNAME_COLUMN";
@@ -27,6 +26,7 @@ public class DBClass extends SQLiteOpenHelper {
     public static final String PASTYPE_COLUMN = "PASTYPE_COLUMN";
     public static final String USERNAME_COLUMN = "USERNAME_COLUMN";
     public static final String PASSWORD_COLUMN = "PASSWORD_COLUMN";
+    private static final String TAG ="sf" ;
 
     public DBClass(@Nullable Context context) {
         super(context, "SafeLog.db", null, 1);
@@ -45,6 +45,27 @@ public class DBClass extends SQLiteOpenHelper {
 
     }
 
+    public void setpasword()
+    {
+        SQLiteDatabase db = this.getWritableDatabase(pascode);
+        db.close();
+    }
+
+    public boolean checkpasword()
+    {
+        boolean correct=true;
+        SQLiteDatabase db;
+        try{
+            db = this.getReadableDatabase(pascode);
+        }
+        catch (Exception e)
+        {
+            correct=false;
+        }
+
+        return correct;
+    }
+
     public void insertGroup(GroupModelClass groupModelClass)
     {
         SQLiteDatabase db = this.getWritableDatabase(pascode);
@@ -54,6 +75,7 @@ public class DBClass extends SQLiteOpenHelper {
         db.close();
 
     }
+
 
     public List<GroupModelClass> readGroupName()
     {

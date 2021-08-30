@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="10dp"
+    tools:context=".PinCheckActivity">
+
+    <TextView
+        android:id="@+id/lockscreenheading"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="SafeLog"
+        android:fontFamily="@font/poppins_regular"
+        android:textSize="48dp"
+        android:textColor="@color/TitleBarColour"
+        android:layout_centerHorizontal="true"/>
+
+        <ImageView
+            android:id="@+id/lockimg"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:src="?attr/ic_lock"
+            android:layout_below="@id/lockscreenheading"
+            android:layout_centerHorizontal="true"
+            android:layout_margin="50dp"/>
+    <TextView
+        android:id="@+id/lockinfo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Enter the Master Pin to Unlock"
+        android:layout_below="@id/lockimg"
+        android:layout_centerHorizontal="true"
+        android:textSize="20dp"/>
+
+    <EditText
+        android:id="@+id/pin_input"
+        android:layout_width="281dp"
+        android:layout_height="51dp"
+        android:layout_below="@id/lockinfo"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="30dp"
+        android:inputType="textPassword"
+        android:padding="5dp" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/unlockbtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/pin_input"
+        android:layout_centerHorizontal="true"
+        android:text="Unlock"
+        android:textSize="14dp"
+        android:textColor="@color/white"
+        android:fontFamily="@font/poppins_regular"
+        android:textAllCaps="false"
+        android:background="@drawable/continue_btn"
+        android:paddingStart="120dp"
+        android:paddingEnd="120dp"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:layout_marginTop="20dp"/>
+
+
+
+
+</RelativeLayout>
