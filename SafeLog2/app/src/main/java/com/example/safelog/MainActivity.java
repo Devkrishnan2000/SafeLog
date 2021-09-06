@@ -87,7 +87,7 @@ public class MainActivity extends AppCompatActivity {
             executorService = Executors.newFixedThreadPool(cores+1);
             SQLiteDatabase.loadLibs(this);
             fabview();                    // initialises fab buttons (add password and add group button)// initialises data for recycler view
-            recyclerinit();              // initialises recyclerview
+           // recyclerinit();              // initialises recyclerview
         }
 
 
@@ -121,7 +121,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-     private Callable<List<PaslistClass>> getpasname()
+   /*  private Callable<List<PaslistClass>> getpasname()
      {
 
          return ()->
@@ -133,7 +133,9 @@ public class MainActivity extends AppCompatActivity {
          };
      }
 
-    private void recyclerinit() {
+    */
+
+  /*  private void recyclerinit() {
 
         AtomicBoolean done = new AtomicBoolean(false);
          executorService.execute(()->{
@@ -179,6 +181,8 @@ public class MainActivity extends AppCompatActivity {
          });
 
         }
+
+   */
 
 
 
@@ -362,6 +366,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void addpass()
     {
+        /*
         String title;
         String usrname;
         String paswrd;
@@ -414,6 +419,7 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         }
+        */
     }
 
     private void updateRecyclerview(String grpname)

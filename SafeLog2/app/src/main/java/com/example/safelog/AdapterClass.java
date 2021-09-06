@@ -234,7 +234,7 @@ public class AdapterClass extends RecyclerView.Adapter<AdapterClass.ViewHolder> 
         private void getdet(int id,String title,int color)        //gets data from databasr about password and username
         {
             DBClass db = new DBClass(itemView.getContext());
-            PasdatClass pasdata =db.getpass(id);
+           // PasdatClass pasdata =db.getpass(id);
 
              if(pasviewdialog!=null)
              {
@@ -352,7 +352,10 @@ public class AdapterClass extends RecyclerView.Adapter<AdapterClass.ViewHolder> 
                      }
                  });
 
+                 /*
+
                  savbtn.setOnClickListener(new View.OnClickListener() {
+
                      @Override
                      public void onClick(View view) {
 
@@ -381,15 +384,22 @@ public class AdapterClass extends RecyclerView.Adapter<AdapterClass.ViewHolder> 
 
 
                      }
+
+
                  });
 
 
-                 username.setText(pasdata.username);
-                 password.setText(pasdata.paswrd);
+               //  username.setText(pasdata.username);
+                // password.setText(pasdata.paswrd);
                  username.addTextChangedListener(checkempty);
                  password.addTextChangedListener(checkempty);
                  passtitle.setText(title);
                  passcard.setBackgroundTintList(ColorStateList.valueOf(color));
+
+
+                  */
+
+
 
              }
         }

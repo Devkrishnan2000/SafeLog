@@ -143,7 +143,7 @@ public class DBClass extends SQLiteOpenHelper {
         db.close();
     }
 
-    public List<PaslistClass> readpasname()
+  /*  public List<PaslistClass> readpasname()
     {
         SQLiteDatabase db = getReadableDatabase(pascode);
         List<PaslistClass> paswlist = new ArrayList<>();
@@ -166,6 +166,8 @@ public class DBClass extends SQLiteOpenHelper {
         return paswlist;
     }
 
+   */
+
     public void deletegrppass(int grpid)
     {
         SQLiteDatabase db = getWritableDatabase(pascode);
@@ -179,7 +181,7 @@ public class DBClass extends SQLiteOpenHelper {
         db.close();
     }
 
-    public PasdatClass getpass(int pasid)
+  /*  public PasdatClass getpass(int pasid)
     {
         PasdatClass paswrddata = new PasdatClass();
         SQLiteDatabase db = getReadableDatabase(pascode);
@@ -198,6 +200,8 @@ public class DBClass extends SQLiteOpenHelper {
         return  paswrddata;
     }
 
+   */
+
     public void delpass(int pasid)
     {
         SQLiteDatabase db = getReadableDatabase(pascode);
@@ -213,7 +217,7 @@ public class DBClass extends SQLiteOpenHelper {
         db.close();
     }
 
-    public void editpas(int pasid, PasdatClass paswrd)
+  /*  public void editpas(int pasid, PasdatClass paswrd)
     {
         SQLiteDatabase db = getWritableDatabase(pascode);
         String query = "UPDATE "+PASSWORD_TABLE+" SET "+USERNAME_COLUMN+"='"+paswrd.username+"',"+PASSWORD_COLUMN+"= '"+paswrd.paswrd+"' WHERE "+PID_COLUMN+"= "+pasid+"";
@@ -222,5 +226,7 @@ public class DBClass extends SQLiteOpenHelper {
         cursor.close();
         db.close();
     }
+
+   */
 
 }

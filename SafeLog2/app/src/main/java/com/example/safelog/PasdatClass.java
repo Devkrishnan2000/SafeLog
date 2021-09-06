@@ -1,4 +1,4 @@
-package com.example.safelog;
+/*package com.example.safelog;
 
 public class PasdatClass
 {
@@ -31,3 +31,5 @@ public class PasdatClass
         this.paswrd = paswrd;
     }
 }
+
+ */
