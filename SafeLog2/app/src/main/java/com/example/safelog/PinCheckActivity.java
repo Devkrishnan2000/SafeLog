@@ -5,7 +5,9 @@ import androidx.appcompat.widget.AppCompatButton;
 import net.sqlcipher.database.SQLiteDatabase;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.text.InputType;
 import android.view.View;
 import android.widget.EditText;
@@ -48,5 +50,29 @@ public class PinCheckActivity extends AppCompatActivity {
 
             }
         });
+
+
+
+
+    }
+
+    private class GetInfoAsync extends AsyncTask<DBClass,String,Allinfo>
+    {
+
+        @Override
+        protected Allinfo doInBackground(DBClass... dbClasses) {
+            Allinfo allinfo;
+           allinfo =  dbClasses[0].getallinfo();
+            return allinfo;
+        }
+
+        @Override
+        protected void onPostExecute(Allinfo allinfo) {
+            super.onPostExecute(allinfo);
+            Intent intent = new Intent(getApplicationContext(),MainActivity.class);
+            intent.putExtra("allinfo", (Parcelable) allinfo);
+            startActivity(intent);
+            finish();
+        }
     }
 }

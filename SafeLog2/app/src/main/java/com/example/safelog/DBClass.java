@@ -76,7 +76,58 @@ public class DBClass extends SQLiteOpenHelper {
 
     }
 
+    public Allinfo getallinfo()
+    {
+        Allinfo allinfo = new Allinfo();
+        List<GroupModelClass> groupModelClassList = new ArrayList<>();
+        List<PaslistClass> paslistClassList = new ArrayList<>();
 
+        SQLiteDatabase db = this.getReadableDatabase(pascode);
+        String group_query = "Select * from "+GROUP_TABLE;
+        Cursor group_cursor= db.rawQuery(group_query,null);
+        if(group_cursor.moveToFirst())
+        {
+            do{
+                int id = group_cursor.getInt(0);
+                String grpname = group_cursor.getString(2);
+                GroupModelClass groupModelClass = new GroupModelClass(id,grpname);
+                groupModelClassList.add(groupModelClass);
+            }while (group_cursor.moveToNext());
+        }
+        group_cursor.close();
+
+        String pass_query = "select * from "+PASSWORD_TABLE;
+        Cursor pass_cursor = db.rawQuery(pass_query,null);
+
+        if(pass_cursor.moveToFirst())
+        {
+            do{
+                int pasid = pass_cursor.getInt(0);
+                String pasname = pass_cursor.getString(2);
+                int grpid = pass_cursor.getInt(3);
+                int color = pass_cursor.getInt(4);
+                String pastype = pass_cursor.getString(5);
+                String usrname = pass_cursor.getString(6);
+                String paswrd = pass_cursor.getString(7);
+                PaslistClass paslistClass = new PaslistClass(pasid,pasname,grpid,color,pastype,usrname,paswrd);
+                paslistClassList.add(paslistClass);
+
+            }while(pass_cursor.moveToNext());
+        }
+
+        pass_cursor.close();
+        db.close();
+
+        allinfo.grouplist = groupModelClassList;
+        allinfo.paslist = paslistClassList;
+
+
+      return allinfo;
+    }
+
+
+
+/*
     public List<GroupModelClass> readGroupName()
     {
         List<GroupModelClass> groupModelClassesList = new ArrayList<>();
@@ -101,6 +152,7 @@ public class DBClass extends SQLiteOpenHelper {
        return groupModelClassesList;
 
     }
+    */
 
     public void delGroup(int groupid)
     {

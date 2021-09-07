@@ -97,7 +97,7 @@ public class MainActivity extends AppCompatActivity {
     {
         executorService.shutdown();
     }
-
+/*
     public Callable<List<ModelClass>> datainit()
     {
          return ()->
@@ -109,7 +109,7 @@ public class MainActivity extends AppCompatActivity {
              // stores password title and group to paslist
              for (GroupModelClass groupModelClass:grpnamelist)
              {
-                 /*gets only the group name from grpnamelist since we only need group name for recycler view */
+                 //gets only the group name from grpnamelist since we only need group name for recycler view
                  String groupname = groupModelClass.grpname;
                  int position = groupModelClass.id;
                  list2.add(new ModelClass(groupname,position));
@@ -120,6 +120,8 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
+
+ */
 
    /*  private Callable<List<PaslistClass>> getpasname()
      {
