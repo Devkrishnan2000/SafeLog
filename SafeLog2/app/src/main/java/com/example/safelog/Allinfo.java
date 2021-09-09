@@ -10,7 +10,7 @@ public class Allinfo  implements Parcelable {
 
     List<GroupModelClass> grouplist;
     List<PaslistClass> paslist;
-
+    boolean checkfail;
     public Allinfo()
     {
 

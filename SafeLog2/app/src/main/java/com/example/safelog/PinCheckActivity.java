@@ -34,16 +34,9 @@ public class PinCheckActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Keyclass.setKey(passwrd.getText().toString());
-                DBClass db = new DBClass(PinCheckActivity.this);
-                try{
+                    DBClass db = new DBClass(PinCheckActivity.this);
                     GetInfoAsync getInfoAsync = new GetInfoAsync();
                     getInfoAsync.execute(db);
-                }
-                catch (Exception ex)
-                {
-                    Toast.makeText(PinCheckActivity.this,"Something went wrong",Toast.LENGTH_SHORT).show();
-                }
-
             }
         });
 
@@ -65,12 +58,16 @@ public class PinCheckActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(Allinfo allinfo) {
             super.onPostExecute(allinfo);
-            if(allinfo.grouplist!=null)
+            if(!allinfo.checkfail)
             {
                 Intent intent = new Intent(getApplicationContext(),MainActivity.class);
                 intent.putExtra("allinfo",allinfo);
                 startActivity(intent);
                 finish();
+            }
+            else
+            {
+                Toast.makeText(PinCheckActivity.this,"Password Incorrect",Toast.LENGTH_SHORT).show();
             }
 
         }
