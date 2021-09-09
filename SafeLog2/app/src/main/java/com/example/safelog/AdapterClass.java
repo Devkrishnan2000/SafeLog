@@ -233,8 +233,9 @@ public class AdapterClass extends RecyclerView.Adapter<AdapterClass.ViewHolder> 
 
         private void getdet(int id,String title,int color)        //gets data from databasr about password and username
         {
-            DBClass db = new DBClass(itemView.getContext());
+           // DBClass db = new DBClass(itemView.getContext());
            // PasdatClass pasdata =db.getpass(id);
+            PaslistClass curpas = paslist.get(id-1);
 
              if(pasviewdialog!=null)
              {
@@ -352,14 +353,14 @@ public class AdapterClass extends RecyclerView.Adapter<AdapterClass.ViewHolder> 
                      }
                  });
 
-                 /*
+
 
                  savbtn.setOnClickListener(new View.OnClickListener() {
 
                      @Override
                      public void onClick(View view) {
 
-                         if(username.getText().toString().equals(pasdata.username)&& password.getText().toString().equals(pasdata.paswrd))
+                         if(username.getText().toString().equals(curpas.username)&& password.getText().toString().equals(curpas.passwrd))
                          {
                              Toast.makeText(pasviewdialog.getContext(),"No changes have made in username or password !",Toast.LENGTH_SHORT).show();
                          }
@@ -369,10 +370,9 @@ public class AdapterClass extends RecyclerView.Adapter<AdapterClass.ViewHolder> 
                                  @Override
                                  public void run() {
 
-                                     PasdatClass curpas = new PasdatClass();
                                      curpas.username =username.getText().toString();
-                                     curpas.paswrd = password.getText().toString();
-                                     curpas.paswtype = "null";
+                                     curpas.passwrd = password.getText().toString();
+                                     curpas.pastype = "null";
                                      DBClass db = new DBClass(pasviewdialog.getContext());
                                      db.editpas(id,curpas);
 
@@ -389,15 +389,17 @@ public class AdapterClass extends RecyclerView.Adapter<AdapterClass.ViewHolder> 
                  });
 
 
-               //  username.setText(pasdata.username);
-                // password.setText(pasdata.paswrd);
+
+
+                 username.setText(curpas.username);
+                 password.setText(curpas.passwrd);
                  username.addTextChangedListener(checkempty);
                  password.addTextChangedListener(checkempty);
                  passtitle.setText(title);
                  passcard.setBackgroundTintList(ColorStateList.valueOf(color));
 
 
-                  */
+
 
 
 

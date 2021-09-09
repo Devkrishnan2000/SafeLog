@@ -127,32 +127,7 @@ public class DBClass extends SQLiteOpenHelper {
 
 
 
-/*
-    public List<GroupModelClass> readGroupName()
-    {
-        List<GroupModelClass> groupModelClassesList = new ArrayList<>();
-        String Query = "Select * from "+GROUP_TABLE;
-        SQLiteDatabase db = this.getReadableDatabase(pascode);
-       Cursor cursor= db.rawQuery(Query,null);
-       if(cursor.moveToFirst())
-       {
-           do{
-               int id = cursor.getInt(0);
-               String grpname = cursor.getString(2);
-               GroupModelClass groupModelClass = new GroupModelClass(id,grpname);
-               groupModelClassesList.add(groupModelClass);
-           }while (cursor.moveToNext());
-       }
-       else
-       {
 
-       }
-       cursor.close();
-       db.close();
-       return groupModelClassesList;
-
-    }
-    */
 
     public void delGroup(int groupid)
     {
@@ -195,30 +170,7 @@ public class DBClass extends SQLiteOpenHelper {
         db.close();
     }
 
-  /*  public List<PaslistClass> readpasname()
-    {
-        SQLiteDatabase db = getReadableDatabase(pascode);
-        List<PaslistClass> paswlist = new ArrayList<>();
-        String query = "SELECT "+PID_COLUMN+","+PNAME_COLUMN+","+GID_COLUMNP+","+COLOUR_COLUMN+" FROM "+PASSWORD_TABLE;
-        Cursor cursor = db.rawQuery(query,null);
-        if(cursor.moveToFirst())
-        {
-            do{
-                 int pid = cursor.getInt(0);
-                 String title = cursor.getString(1);
-                 int grpid =cursor.getInt(2);
-                 int colorid =cursor.getInt(3);
-                 PaslistClass paslistClass = new PaslistClass(pid,title,grpid,colorid);
-                 paswlist.add(paslistClass);
 
-            }while (cursor.moveToNext());
-        }
-        cursor.close();
-        db.close();
-        return paswlist;
-    }
-
-   */
 
     public void deletegrppass(int grpid)
     {
@@ -232,18 +184,21 @@ public class DBClass extends SQLiteOpenHelper {
         cursor.close();
         db.close();
     }
-
-  /*  public PasdatClass getpass(int pasid)
+/*
+   public PaslistClass getpass(int pasid)
     {
-        PasdatClass paswrddata = new PasdatClass();
+        PaslistClass paswrddata;
         SQLiteDatabase db = getReadableDatabase(pascode);
         String query = "SELECT "+PASTYPE_COLUMN+","+PASSWORD_COLUMN+","+USERNAME_COLUMN+" FROM "+PASSWORD_TABLE+" WHERE "+PID_COLUMN+" = "+pasid+"";
         Cursor cursor = db.rawQuery(query,null);
         if(cursor.moveToFirst())
         {
-                paswrddata.username =cursor.getString(2);
-                paswrddata.paswrd =cursor.getString(1);
-                paswrddata.paswtype =cursor.getString(0);
+            paswrddata = new PaslistClass()
+
+            //    paswrddata.username =cursor.getString(2);
+             //   paswrddata.paswrd =cursor.getString(1);
+              //  paswrddata.paswtype =cursor.getString(0);
+
         }
         else
         {}
@@ -251,8 +206,9 @@ public class DBClass extends SQLiteOpenHelper {
         db.close();
         return  paswrddata;
     }
+    */
 
-   */
+
 
     public void delpass(int pasid)
     {
@@ -269,16 +225,16 @@ public class DBClass extends SQLiteOpenHelper {
         db.close();
     }
 
-  /*  public void editpas(int pasid, PasdatClass paswrd)
+    public void editpas(int pasid, PaslistClass paswrd)
     {
         SQLiteDatabase db = getWritableDatabase(pascode);
-        String query = "UPDATE "+PASSWORD_TABLE+" SET "+USERNAME_COLUMN+"='"+paswrd.username+"',"+PASSWORD_COLUMN+"= '"+paswrd.paswrd+"' WHERE "+PID_COLUMN+"= "+pasid+"";
+        String query = "UPDATE "+PASSWORD_TABLE+" SET "+USERNAME_COLUMN+"='"+paswrd.username+"',"+PASSWORD_COLUMN+"= '"+paswrd.passwrd+"' WHERE "+PID_COLUMN+"= "+pasid+"";
         Cursor cursor = db.rawQuery(query,null);
         cursor.moveToFirst();
         cursor.close();
         db.close();
     }
 
-   */
+
 
 }

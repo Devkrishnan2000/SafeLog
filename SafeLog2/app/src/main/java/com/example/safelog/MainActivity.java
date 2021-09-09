@@ -42,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
     //recycler view declarations
     RecyclerView recyclerView;
     LinearLayoutManager linearLayoutManager;
+    public Allinfo allinfo;
     public List<ModelClass> grplist;  //list that is given to recyclerview
     public List<GroupModelClass> grpnamelist; // list of group names and id from database
     public List<PaslistClass> paslist; //list of password names and group that it belongs
@@ -86,8 +87,10 @@ public class MainActivity extends AppCompatActivity {
             cores = Runtime.getRuntime().availableProcessors();
             executorService = Executors.newFixedThreadPool(cores+1);
             SQLiteDatabase.loadLibs(this);
+            Intent intent = getIntent();
+            allinfo = intent.getParcelableExtra("allinfo");
             fabview();                    // initialises fab buttons (add password and add group button)// initialises data for recycler view
-           // recyclerinit();              // initialises recyclerview
+            recyclerinit();              // initialises recyclerview
         }
 
 
@@ -97,95 +100,25 @@ public class MainActivity extends AppCompatActivity {
     {
         executorService.shutdown();
     }
-/*
-    public Callable<List<ModelClass>> datainit()
-    {
-         return ()->
-         {
-             List<ModelClass> list2 = new ArrayList<>();
-             list2 = new ArrayList<>();
-             DBClass db = new DBClass(this);
-             grpnamelist = db.readGroupName();//stores group names and their ids
-             // stores password title and group to paslist
-             for (GroupModelClass groupModelClass:grpnamelist)
-             {
-                 //gets only the group name from grpnamelist since we only need group name for recycler view
-                 String groupname = groupModelClass.grpname;
-                 int position = groupModelClass.id;
-                 list2.add(new ModelClass(groupname,position));
-
-             }
-             return list2;
-         };
 
 
-    }
+    private void recyclerinit() {
 
- */
+        grplist = new ArrayList<>();
+        grpnamelist =allinfo.grouplist;
+        for (GroupModelClass item: grpnamelist) {
+           grplist.add(new ModelClass(item.grpname,item.id));
+        }
+        paslist = allinfo.paslist;
 
-   /*  private Callable<List<PaslistClass>> getpasname()
-     {
-
-         return ()->
-         {
-             List<PaslistClass> list1 = new ArrayList<>();
-             DBClass db = new DBClass(this);
-             list1 =  db.readpasname();
-             return list1;
-         };
-     }
-
-    */
-
-  /*  private void recyclerinit() {
-
-        AtomicBoolean done = new AtomicBoolean(false);
-         executorService.execute(()->{
-          Future<List<PaslistClass>> list1 = executorService.submit(getpasname());
-             Future<List<ModelClass>> list2 = executorService.submit(datainit());
-
-             try {
-                 paslist = list1.get();
-             } catch (ExecutionException e) {
-                 e.printStackTrace();
-             } catch (InterruptedException e) {
-                 e.printStackTrace();
-             }
-             try {
-                 grplist = list2.get();
-             } catch (ExecutionException e) {
-                 e.printStackTrace();
-             } catch (InterruptedException e) {
-                 e.printStackTrace();
-             }
-
-             Adapter = new AdapterClass(grplist,paslist);
-
-             if(list1.isDone()&& list2.isDone())
-                 done.set(true);
-
-              while(true)
-              {
-                  if(list1.isDone()&&list2.isDone())
-                      break;
-              }
-              runOnUiThread(new Runnable() {
-                  @Override
-                  public void run() {
-                      recyclerView = findViewById(R.id.recycler);   //finds recycler in main activity
-                      linearLayoutManager = new LinearLayoutManager(MainActivity.this);
-                      recyclerView.setLayoutManager(linearLayoutManager);
-                      linearLayoutManager.setOrientation(RecyclerView.VERTICAL); //set the orientation of recyclerviwe
-                      recyclerView.setAdapter(Adapter);
-                  }
-              });
-
-         });
+        Adapter = new AdapterClass(grplist,paslist);
+        recyclerView = findViewById(R.id.recycler);   //finds recycler in main activity
+        linearLayoutManager = new LinearLayoutManager(MainActivity.this);
+        recyclerView.setLayoutManager(linearLayoutManager);
+        linearLayoutManager.setOrientation(RecyclerView.VERTICAL); //set the orientation of recyclerviwe
+        recyclerView.setAdapter(Adapter);
 
         }
-
-   */
-
 
 
 
@@ -368,7 +301,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void addpass()
     {
-        /*
+
         String title;
         String usrname;
         String paswrd;
@@ -413,7 +346,7 @@ public class MainActivity extends AppCompatActivity {
                        catch (ArrayIndexOutOfBoundsException ignored){}
 
 
-                    PaslistClass item = new PaslistClass(pasid,title,grpid,color);
+                    PaslistClass item = new PaslistClass(pasid,title,grpid,color,pastype,usrname,paswrd);
                     Adapter.notifyItemChanged(grppos);
                     paslist.add(item);
                     pasdialog.dismiss();
@@ -421,7 +354,7 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         }
-        */
+
     }
 
     private void updateRecyclerview(String grpname)

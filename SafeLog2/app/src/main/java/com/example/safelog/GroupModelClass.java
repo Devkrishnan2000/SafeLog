@@ -2,7 +2,9 @@ package com.example.safelog;
 
 import androidx.annotation.NonNull;
 
-public class GroupModelClass {
+import java.io.Serializable;
+
+public class GroupModelClass implements Serializable {
     int id;
     String grpname;
 

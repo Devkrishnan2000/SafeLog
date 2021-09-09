@@ -1,6 +1,8 @@
 package com.example.safelog;
 
-public class PaslistClass {
+import java.io.Serializable;
+
+public class PaslistClass implements Serializable {
 
     int pasid;
     String title;
