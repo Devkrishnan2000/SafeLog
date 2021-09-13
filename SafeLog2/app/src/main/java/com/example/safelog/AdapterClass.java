@@ -235,7 +235,11 @@ public class AdapterClass extends RecyclerView.Adapter<AdapterClass.ViewHolder> 
         {
            // DBClass db = new DBClass(itemView.getContext());
            // PasdatClass pasdata =db.getpass(id);
-            PaslistClass curpas = paslist.get(id-1);
+              PaslistClass curpas =null;
+            for (PaslistClass curitem:paslist) {
+                if (curitem.pasid == id)
+                    curpas = curitem;
+            }
 
              if(pasviewdialog!=null)
              {
@@ -354,13 +358,13 @@ public class AdapterClass extends RecyclerView.Adapter<AdapterClass.ViewHolder> 
                  });
 
 
-
+                 PaslistClass finalCurpas = curpas;
                  savbtn.setOnClickListener(new View.OnClickListener() {
 
                      @Override
                      public void onClick(View view) {
 
-                         if(username.getText().toString().equals(curpas.username)&& password.getText().toString().equals(curpas.passwrd))
+                         if(username.getText().toString().equals(finalCurpas.username)&& password.getText().toString().equals(finalCurpas.passwrd))
                          {
                              Toast.makeText(pasviewdialog.getContext(),"No changes have made in username or password !",Toast.LENGTH_SHORT).show();
                          }
@@ -370,11 +374,11 @@ public class AdapterClass extends RecyclerView.Adapter<AdapterClass.ViewHolder> 
                                  @Override
                                  public void run() {
 
-                                     curpas.username =username.getText().toString();
-                                     curpas.passwrd = password.getText().toString();
-                                     curpas.pastype = "null";
+                                     finalCurpas.username =username.getText().toString();
+                                     finalCurpas.passwrd = password.getText().toString();
+                                     finalCurpas.pastype = "null";
                                      DBClass db = new DBClass(pasviewdialog.getContext());
-                                     db.editpas(id,curpas);
+                                     db.editpas(id, finalCurpas);
 
                                  }
                              });
@@ -387,9 +391,6 @@ public class AdapterClass extends RecyclerView.Adapter<AdapterClass.ViewHolder> 
 
 
                  });
-
-
-
 
                  username.setText(curpas.username);
                  password.setText(curpas.passwrd);

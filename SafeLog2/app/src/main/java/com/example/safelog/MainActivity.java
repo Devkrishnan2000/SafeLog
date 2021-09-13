@@ -104,21 +104,27 @@ public class MainActivity extends AppCompatActivity {
 
     private void recyclerinit() {
 
-        grplist = new ArrayList<>();
-        grpnamelist =allinfo.grouplist;
-        for (GroupModelClass item: grpnamelist) {
-           grplist.add(new ModelClass(item.grpname,item.id));
+        try{
+            grplist = new ArrayList<>();
+            grpnamelist =allinfo.grouplist;
+            for (GroupModelClass item: grpnamelist) {
+                grplist.add(new ModelClass(item.grpname,item.id));
+            }
+            paslist = allinfo.paslist;
+        }catch (NullPointerException ex)
+        {
+            paslist = new ArrayList<>();
         }
-        paslist = allinfo.paslist;
+            Adapter = new AdapterClass(grplist,paslist);
+            recyclerView = findViewById(R.id.recycler);   //finds recycler in main activity
+            linearLayoutManager = new LinearLayoutManager(MainActivity.this);
+            recyclerView.setLayoutManager(linearLayoutManager);
+            linearLayoutManager.setOrientation(RecyclerView.VERTICAL); //set the orientation of recyclerviwe
+            recyclerView.setAdapter(Adapter);
 
-        Adapter = new AdapterClass(grplist,paslist);
-        recyclerView = findViewById(R.id.recycler);   //finds recycler in main activity
-        linearLayoutManager = new LinearLayoutManager(MainActivity.this);
-        recyclerView.setLayoutManager(linearLayoutManager);
-        linearLayoutManager.setOrientation(RecyclerView.VERTICAL); //set the orientation of recyclerviwe
-        recyclerView.setAdapter(Adapter);
 
         }
+
 
 
 
@@ -193,13 +199,19 @@ public class MainActivity extends AppCompatActivity {
         });
 
         adpasbtn.setOnClickListener(view -> {
-            if(pasdialog==null)
-                initpasdialog(); // need to only initialize password dialog once
-            //once the dialog is opened these buttons need to be hide so that they are not obstructing the view
-            pasdialog.show();
-            adgrpbtn.hide();
-            adpasbtn.hide();
-            isfabvisible =false; // sets flag to false to show that they are visible
+            if(!grplist.isEmpty())   //password can only be added if atleast one group is created
+            {
+                if(pasdialog==null)
+                    initpasdialog(); // need to only initialize password dialog once
+                //once the dialog is opened these buttons need to be hide so that they are not obstructing the view
+                pasdialog.show();
+                adgrpbtn.hide();
+                adpasbtn.hide();
+                isfabvisible =false; // sets flag to false to show that they are visible
+            }
+            else
+                Toast.makeText(MainActivity.this,"Create a Group First!",Toast.LENGTH_SHORT).show();
+
         });
 
     }
@@ -321,6 +333,10 @@ public class MainActivity extends AppCompatActivity {
                 if(Adapter.getgrpbtncount(grpid)>=9)
                 {
                     Toast.makeText(this,"Current group is full, please select another group",Toast.LENGTH_SHORT).show();
+                }
+                if(paswordtitletxt.getText().length()>12)
+                {
+                    Toast.makeText(this,"Maximum 12 characters allowed on Title",Toast.LENGTH_SHORT).show();
                 }
                 else
                 {
