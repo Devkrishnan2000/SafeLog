@@ -60,6 +60,10 @@
         <entry key="..\:/Users/devan/AndroidStudioProjects/SafeLog2/app/src/main/res/layout/pasword_dialog.xml" value="0.43190661478599224" />
         <entry key="..\:/Users/devan/AndroidStudioProjects/SafeLog2/app/src/main/res/layout/spinnerdropdown.xml" value="0.5446428571428571" />
         <entry key="..\:/Users/devan/AndroidStudioProjects/SafeLog2/app/src/main/res/layout/viewpassword_dialog.xml" value="0.2" />
+        <entry key="app/src/main/res/layout/activity_main.xml" value="0.35" />
+        <entry key="app/src/main/res/layout/passview_dialog.xml" value="0.35" />
+        <entry key="app/src/main/res/layout/pasword_dialog.xml" value="0.19427083333333334" />
+        <entry key="app/src/main/res/layout/spinnerdropdown.xml" value="0.33" />
       </map>
     </option>
   </component>

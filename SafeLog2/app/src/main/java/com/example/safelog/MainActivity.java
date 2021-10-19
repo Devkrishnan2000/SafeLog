@@ -1,13 +1,25 @@
 package com.example.safelog;
 
+import static android.service.controls.ControlsProviderService.TAG;
+
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.content.res.AppCompatResources;
+import androidx.appcompat.widget.AppCompatAutoCompleteTextView;
+import androidx.appcompat.widget.AppCompatButton;
+import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.Dialog;
+import android.content.ClipboardManager;
+import android.content.Context;
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.InputType;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +31,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -33,7 +46,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import net.sqlcipher.database.SQLiteDatabase;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements PasdialogView {
 
     private static final String TAG = "dev" ;
     private static int cores;
@@ -73,6 +86,8 @@ public class MainActivity extends AppCompatActivity {
     int grpid;
     int grppos;
     int color;
+    AppCompatAutoCompleteTextView search_text;  //search texiview
+    Dialog pasviewdialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,10 +106,50 @@ public class MainActivity extends AppCompatActivity {
             allinfo = intent.getParcelableExtra("allinfo");
             fabview();                    // initialises fab buttons (add password and add group button)// initialises data for recycler view
             recyclerinit();              // initialises recyclerview
+            search_func();
         }
 
+    }
+
+    public void search_func()
+    {
+        List<String> pasnamelist;
+        pasnamelist = new ArrayList<>(50);
+        PaslistClass item;
+
+        for(int i=0;i<paslist.size();++i)
+        {
+            item = paslist.get(i);
+            pasnamelist.add(item.title);
+        }
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,R.layout.spinnerdropdown, pasnamelist);
+
+        search_text = findViewById(R.id.searchtext);
+        search_text.setThreshold(1);
+        search_text.setAdapter(adapter);
+        search_text.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Object item = parent.getItemAtPosition(position);
+
+
+                for(int i=0;i<paslist.size();++i)
+                {
+                    if(item.equals(paslist.get(i).title))
+                    {
+                        setpasdialog();
+                        getdet(paslist.get(i).pasid,paslist.get(i).title,paslist.get(i).color);
+                        pasviewdialog.show();
+                        search_text.setText("");
+                    }
+                }
+            }
+        });
 
     }
+
+
 
     public void exestop()
     {
@@ -401,5 +456,190 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    // definition for the interface PasdialogView responsible for the pasviewdialog when searched item is selected;
 
+    @Override
+    public void setpasdialog() {
+        pasviewdialog = new Dialog(MainActivity.this);
+        pasviewdialog.setContentView(R.layout.passview_dialog);
+        pasviewdialog.getWindow().setBackgroundDrawable(ContextCompat.getDrawable(MainActivity.this, R.drawable.dialog_background));
+        pasviewdialog.getWindow().setLayout(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT);
+
+        Button cancle_btn = pasviewdialog.findViewById(R.id.canclpasviewbtn);
+
+
+        cancle_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                pasviewdialog.dismiss();
+            }
+        });
+    }
+
+    @Override
+    public void getdet(int id, String title, int color) {
+        PaslistClass curpas =null;
+        for (PaslistClass curitem:paslist) {
+            if (curitem.pasid == id)
+                curpas = curitem;
+        }
+        if(pasviewdialog!=null)
+        {
+            ClipboardManager clipboard = (android.content.ClipboardManager) pasviewdialog.getContext().getSystemService(Context.CLIPBOARD_SERVICE);
+            EditText username = pasviewdialog.findViewById(R.id.usernametxt);
+            EditText password = pasviewdialog.findViewById(R.id.passwordtxt);
+            TextView passtitle = pasviewdialog.findViewById(R.id.passviewtitle);
+            MaterialCardView passcard = pasviewdialog.findViewById(R.id.passviewtitlecard);
+            AppCompatImageButton paseye_btn = pasviewdialog.findViewById(R.id.paseye);
+            AppCompatImageButton usercopy = pasviewdialog.findViewById(R.id.usercopy);
+            AppCompatImageButton passcopy = pasviewdialog.findViewById(R.id.pascopy);
+            AppCompatImageButton delbtn =  pasviewdialog.findViewById(R.id.delpasbtn);
+            AppCompatButton savbtn = pasviewdialog.findViewById(R.id.savepasviewbtn);
+            TextWatcher checkempty = new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                }
+
+                @Override
+                public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                    String pas = password.getText().toString();
+                    String usr = username.getText().toString();
+                    Log.d(TAG, "onTextChanged: "+usr);
+
+                    if(pas.isEmpty()&& usr.isEmpty())
+                    {
+                        savbtn.setEnabled(false);
+                        savbtn.setBackgroundTintList(AppCompatResources.getColorStateList(MainActivity.this,R.color.grey));
+                    }
+                    else if(usr.isEmpty()||pas.isEmpty())
+                    {
+                        savbtn.setEnabled(false);
+                        savbtn.setBackgroundTintList(AppCompatResources.getColorStateList(MainActivity.this,R.color.grey));
+                    }
+                    else
+                    {
+                        savbtn.setEnabled(true);
+                        savbtn.setBackgroundTintList(AppCompatResources.getColorStateList(MainActivity.this,R.color.TitleBarColour));
+                    }
+
+
+
+                }
+
+                @Override
+                public void afterTextChanged(Editable editable) {
+
+                }
+            };
+
+
+
+            paseye_btn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if(password.getInputType()==(InputType.TYPE_CLASS_TEXT|InputType.TYPE_TEXT_VARIATION_PASSWORD))
+                    {
+                        password.setInputType(InputType.TYPE_CLASS_TEXT|InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
+                    }
+                    else
+                    {
+                        password.setInputType(InputType.TYPE_CLASS_TEXT|InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                    }
+
+
+                }
+            });
+
+            usercopy.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                    android.content.ClipData clip = android.content.ClipData.newPlainText("Copied Text",username.getText());
+                    clipboard.setPrimaryClip(clip);
+                    Toast.makeText(pasviewdialog.getContext(),"Username Copied",Toast.LENGTH_SHORT).show();
+                }
+            });
+
+            passcopy.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    android.content.ClipData clip = android.content.ClipData.newPlainText("Copied Text",password.getText());
+                    clipboard.setPrimaryClip(clip);
+                    Toast.makeText(pasviewdialog.getContext(),"Password Copied",Toast.LENGTH_SHORT).show();
+
+                }
+            });
+
+            delbtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    executorService.execute(new Runnable() {
+                        @Override
+                        public void run() {
+
+                            DBClass db = new DBClass(pasviewdialog.getContext());
+                            db.delpass(id);
+                        }
+                    });
+                    int pos=0;
+                    int i=0;
+                    for (PaslistClass paswd:paslist) {
+
+                        if(paswd.pasid==id)
+                        {
+                            pos = i;
+                        }
+                        i++;
+                    }
+                    //btn_del = true;
+                    paslist.remove(pos);
+                    pasviewdialog.dismiss();
+
+                }
+            });
+
+
+            PaslistClass finalCurpas = curpas;
+            savbtn.setOnClickListener(new View.OnClickListener() {
+
+                @Override
+                public void onClick(View view) {
+
+                    if(username.getText().toString().equals(finalCurpas.username)&& password.getText().toString().equals(finalCurpas.passwrd))
+                    {
+                        Toast.makeText(pasviewdialog.getContext(),"No changes have made in username or password !",Toast.LENGTH_SHORT).show();
+                    }
+                    else
+                    {
+                        executorService.execute(new Runnable() {
+                            @Override
+                            public void run() {
+
+                                finalCurpas.username =username.getText().toString();
+                                finalCurpas.passwrd = password.getText().toString();
+                                finalCurpas.pastype = "null";
+                                DBClass db = new DBClass(pasviewdialog.getContext());
+                                db.editpas(id, finalCurpas);
+
+                            }
+                        });
+
+                        Toast.makeText(pasviewdialog.getContext(),"Changes Saved",Toast.LENGTH_SHORT).show();
+                    }
+
+
+                }
+
+
+            });
+
+            username.setText(curpas.username);
+            password.setText(curpas.passwrd);
+            username.addTextChangedListener(checkempty);
+            password.addTextChangedListener(checkempty);
+            passtitle.setText(title);
+            passcard.setBackgroundTintList(AppCompatResources.getColorStateList(MainActivity.this, color));
+        }
+    }
 }

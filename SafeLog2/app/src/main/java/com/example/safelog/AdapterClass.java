@@ -47,14 +47,14 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
 
-public class AdapterClass extends RecyclerView.Adapter<AdapterClass.ViewHolder>  {
+public class AdapterClass extends RecyclerView.Adapter<AdapterClass.ViewHolder> {
     @NonNull
 
     private List<ModelClass> grplist;
     public List<PaslistClass> paslist;
     static int cores =Runtime.getRuntime().availableProcessors();
     private  static ExecutorService adapter_executor = Executors.newFixedThreadPool(cores+1);
-    boolean btn_del = false;
+    static boolean btn_del = false;
     Dialog dialog; // edit dialog
     Dialog pasviewdialog; // pasword view dialog;
 
@@ -92,7 +92,9 @@ public class AdapterClass extends RecyclerView.Adapter<AdapterClass.ViewHolder> 
     }
 
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+
+
+    public class ViewHolder extends RecyclerView.ViewHolder implements PasdialogView {
         public TextView Headingtxt;
         public TextView Createtxt;
         public ImageButton  Editbtn;
@@ -193,7 +195,7 @@ public class AdapterClass extends RecyclerView.Adapter<AdapterClass.ViewHolder> 
                                    pasviewdialog.show();
                                    pasviewdialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
                                        @Override
-                                       public void onDismiss(DialogInterface dialogInterface) {
+                                       public  void onDismiss(DialogInterface dialogInterface) {
                                            Log.d(TAG, "onClick: "+btn_del);
                                            if(btn_del)
                                            {
@@ -213,7 +215,8 @@ public class AdapterClass extends RecyclerView.Adapter<AdapterClass.ViewHolder> 
 
         }
 
-        private void setpasdialog()       // initializes setpasdialog
+
+       public  void setpasdialog()       // initializes setpasdialog
         {
            pasviewdialog = new Dialog(itemView.getContext());
            pasviewdialog.setContentView(R.layout.passview_dialog);
@@ -231,7 +234,7 @@ public class AdapterClass extends RecyclerView.Adapter<AdapterClass.ViewHolder> 
            });
         }
 
-        private void getdet(int id,String title,int color)        //gets data from databasr about password and username
+      public void getdet(int id,String title,int color)        //gets data from databasr about password and username
         {
            // DBClass db = new DBClass(itemView.getContext());
            // PasdatClass pasdata =db.getpass(id);
@@ -398,12 +401,6 @@ public class AdapterClass extends RecyclerView.Adapter<AdapterClass.ViewHolder> 
                  password.addTextChangedListener(checkempty);
                  passtitle.setText(title);
                  passcard.setBackgroundTintList(ColorStateList.valueOf(color));
-
-
-
-
-
-
              }
         }
 
